@@ -1,5 +1,5 @@
 :root {
-    --icons-star: url("./images/icons-star.png");
+    --icons-star: url("/images/icons-star.png");
 }
 
 .product-card {

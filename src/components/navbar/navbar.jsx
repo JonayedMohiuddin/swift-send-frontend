@@ -7,7 +7,7 @@ export default function Navbar() {
         <div className="navbar-container">
             <div className="navbar">
                 <Link className="navbar__logo" to="/">
-                    <img src="./images/logo.svg" alt="logo" />
+                    <img src="/images/logo.svg" alt="logo" />
                 </Link>
                 <div className="navbar__search-container">
                     <div className="navbar__category-container">
@@ -20,13 +20,13 @@ export default function Navbar() {
                         </select>
                     </div>
                     <input className="navbar__search" type="text" placeholder="Search" />
-                    <button className="navbar__search-btn js-search-btn"></button>
+                    <button className="navbar__search-btn"></button>
                 </div>
-                <button className="navbar__btn js-login-btn">Log In</button>
-                <button className="navbar__btn js-signup-btn">Sign Up</button>
-                <button className="navbar__btn-image js-cart-btn">
-                    <img className="navbar__image-btn" src="./images/icons-cart.png" alt="cart" />
-                </button>
+                <button className="navbar__btn">Log In</button>
+                <button className="navbar__btn">Sign Up</button>
+                <Link className="navbar__btn-image" to="/cart">
+                    <img className="navbar__image-btn" src="/images/icons-cart.png" alt="cart" />
+                </Link>
             </div>
         </div>
     );

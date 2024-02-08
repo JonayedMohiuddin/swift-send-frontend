@@ -42,7 +42,7 @@ body {
     justify-content: flex-end;
     padding: 15px 5%;
     padding-top: 20px;
-    width: 90%;
+    width: 92%;
 }
 
 .navbar__logo {
@@ -87,7 +87,7 @@ body {
     height: 35px;
     border-radius: 0 8px 8px 0;
     background-color: #e9c46a;
-    background-image: url('./images/icons-search.png');
+    background-image: url('/images/icons-search.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: 20px 20px;
@@ -99,9 +99,14 @@ body {
 }
 
 .navbar__category {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
     font-family: Georgia, Times, 'Times New Roman', serif;
     font-size: 0.8em;
-    width: 100px;
+    min-width: 80px;
+    width: auto;
     height: 35px;
     border-radius: 8px 0 0 8px;
     background-color: #edf0f1;
@@ -109,6 +114,16 @@ body {
     border-right: #60a7a5 1px solid;
     padding-left: 10px;
     transition: all 0.3s ease 0s;
+}
+
+.navbar__category:focus {
+    border: none;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    border-right: #60a7a5 1px solid;
 }
 
 .navbar__category:hover {
