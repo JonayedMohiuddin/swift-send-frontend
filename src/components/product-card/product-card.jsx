@@ -7,7 +7,10 @@ export default function ProductCard({ product }) {
         <div className="product-card">
             <Link to={`/catalog/${product.ID}`} className="product-card__link">
                 <img
-                    src={product.IMAGE_URL}
+                    src="/images/no-product-image.jpg"
+                    // ***********************
+                    // src={product.IMAGE_URL}
+                    // ***********************
                     alt={product.NAME}
                     className="product-card__image"
                     onError={(e) => {

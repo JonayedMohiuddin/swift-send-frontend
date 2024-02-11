@@ -12,7 +12,14 @@ export default function ProductDetail() {
     return (
         <div className="detail-container">
             <div className="gallery">
-                <img className="gallery__image" src={product.IMAGE_URL} alt="product" />
+                <img
+                    className="gallery__image"
+                    src={product.IMAGE_URL}
+                    alt="product"
+                    onError={(e) => {
+                        e.target.src = "/images/no-product-image.jpg";
+                    }}
+                />
             </div>
             <div className="product-detail">
                 <div className="product-detail__name">{product.NAME}</div>
