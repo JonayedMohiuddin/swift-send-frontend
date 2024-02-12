@@ -1,11 +1,5 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 
-const items = [
-    { id: 1, title: "Back End Developer", department: "Engineering", type: "Full-time", location: "Remote" },
-    { id: 2, title: "Front End Developer", department: "Engineering", type: "Full-time", location: "Remote" },
-    { id: 3, title: "User Interface Designer", department: "Design", type: "Full-time", location: "Remote" },
-];
-
 export default function Pagination({ totalProducts, currentPage, lastPage }) {
     let paginationLinksFirstPart = [];
     let paginationLinksSecondPart = [];
@@ -50,7 +44,7 @@ export default function Pagination({ totalProducts, currentPage, lastPage }) {
             <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
                 <div>
                     <p className="text-sm text-gray-700 hidden lg:block">
-                        Showing <span className="font-medium">{(currentPage - 1) * 30 + 1}</span> to <span className="font-medium">{Math.min(currentPage * 30, totalProducts)}</span> of{" "}
+                        Showing <span className="font-medium">{(currentPage - 1) * 30 + ((totalProducts > 0)? 1 : 0)}</span> to <span className="font-medium">{Math.min(currentPage * 30, totalProducts)}</span> of{" "}
                         <span className="font-medium">{totalProducts}</span> results
                     </p>
                 </div>

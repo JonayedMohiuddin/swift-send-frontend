@@ -2,7 +2,7 @@ export default function Login() {
     return (
         <>
             {/* <div className="container flex flex-row justify-center min-h-full min-w-full h-[100vh] p-0 m-0"> */}
-            <div className="flex flex-row justify-center min-w-full p-8 m-0">
+            <div className="flex flex-row justify-center min-w-full pt-2 pb-8 m-0">
                 <div className="flex flex-col justify-center px-10 pt-4 pb-8 bg-slate-300 rounded-md rounded-r-none bg-opacity-90 border border-slate-800 border-r-0">
                     {/* <div className="flex flex-col justify-center my-4 px-10"> */}
                     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
