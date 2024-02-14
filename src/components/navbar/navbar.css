@@ -25,7 +25,8 @@
     justify-content: center;
     width: 100%;
     box-sizing: border-box;
-    background-color: #2d6074;
+    background-color: #6c3784 ;
+    /* background-color: #2d6074; */
     height: 80px;
     position: fixed;
     top: 0;
@@ -69,8 +70,8 @@
     font-family: "roboto", monospace;
     font-size: small;
     width: 100%;
-    max-width: 500px;
-    height: 35px;
+    max-width: 600px;
+    height: 40px;
     background-color: #e7e7e7;
     border-radius: 0;
     border-width: 0px;
@@ -84,9 +85,10 @@
 
 .navbar__search-btn {
     min-width: 50px;
-    height: 35px;
+    height: 40px;
     border-radius: 0 8px 8px 0;
-    background-color: #e9c46a;
+    /* background-color: #e9c46a; */
+    background-color: #ff69cd;
     background-image: url('/images/icons-search.png');
     background-repeat: no-repeat;
     background-position: center;
@@ -94,7 +96,7 @@
 }
 
 .navbar__search-btn:hover {
-    opacity: 0.8;
+    background-color: #ff24b6;
     transition: all 0.3s ease 0s;
 }
 
@@ -107,7 +109,7 @@
 
     font-family: Georgia, Times, 'Times New Roman', serif;
     font-size: 0.8em;
-    height: 35px;
+    height: 40px;
     border-radius: 8px 0 0 8px;
     background-color: #edf0f1;
     border: none;
@@ -115,6 +117,7 @@
     transition: all 0.3s ease 0s;
     padding: 5px;
     padding-left: 10px;
+    padding-right: 10px;
     cursor: pointer;
 }
 
@@ -159,7 +162,9 @@
 }
 
 .navbar__link:hover {
-    background-color: #264754;
+    /* background-color: #264754; */
+    background-color: #553261;
+    color: #ff63b9;
     transition: all 0.3s ease 0s;
 }
 
@@ -172,7 +177,9 @@
 }
 
 .navbar__btn-image:hover {
-    background-color: #264754;
+    /* background-color: #264754; */
+    background-color: #553261;
+    color: #ff63b9;
     transition: all 0.3s ease 0s;
 }
 

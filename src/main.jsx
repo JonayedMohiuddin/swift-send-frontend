@@ -1,23 +1,26 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
+import "./main.css";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Root from "./pages/root/root";
-import { rootLoader } from "./pages/root/rootApi";
+import { rootLoader } from "./pages/root/root-controller";
 
 import Catalog from "./pages/catalog/catalog";
-import { productLoader } from "./pages/catalog/catalogApi";
+import { productLoader } from "./pages/catalog/catalog-controller";
 
 import ProductDetail from "./pages/product-detail/product-detail";
-import { productDetailLoader } from "./pages/product-detail/productDetailApi";
+import { productDetailLoader } from "./pages/product-detail/product-detail-controller";
+
+import Login from "./pages/login/login";
+import { loginAction } from "./pages/login/login-controller";
+
+import Signup from "./pages/signup/signup";
+import { signupAction } from "./pages/signup/signup-controller";
 
 import Cart from "./pages/cart/cart";
 
-import Login from "./pages/login/login";
-
-import Signup from "./pages/signup/signup";
 
 const router = createBrowserRouter([
     {
@@ -47,14 +50,15 @@ const router = createBrowserRouter([
             {
                 path: "/login",
                 element: <Login />,
+                action: loginAction,
             },
             {
                 path: "/signup",
                 element: <Signup />,
-            }
+                action: signupAction,
+            },
         ],
     },
-    
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

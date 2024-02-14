@@ -47,12 +47,12 @@ export default function Navbar() {
 
                     <Link to="/login" className="navbar__link mr-3">
                         <UserCircleIcon className="w-5" />
-                        Log In
+                        Sign in
                     </Link>
 
                     <div className="p-0 m-0 mr-3 w-[2px] h-[30px] bg-white"></div>
 
-                    <Link to="/signup" className="navbar__link mr-3">
+                    <Link to="/signup" className="navbar__link mr-5">
                         Sign Up
                     </Link>
                     <Link className="navbar__btn-image" to="/cart">

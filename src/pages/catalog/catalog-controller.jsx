@@ -39,7 +39,7 @@ export async function productLoader({ request }) {
 
         response = await fetch(url);
         const result = await response.json();
-
+ 
         totalProducts = parseInt(result.PRODUCT_COUNT);
         totalPages = parseInt(result.COUNT);
 
