@@ -1,5 +1,5 @@
 /* CSS RESET START */
-.navbar__btn, 
+.navbar__btn,
 .navbar__btn-image,
 .navbar__search-btn {
     background: none;
@@ -25,8 +25,9 @@
     justify-content: center;
     width: 100%;
     box-sizing: border-box;
-    background-color: #6c3784 ;
+    /* background-color: #6c3784 ; */
     /* background-color: #2d6074; */
+    background-color: #f85606;
     height: 80px;
     position: fixed;
     top: 0;
@@ -51,13 +52,12 @@
     height: 50px;
 
     min-width: 100px;
-
 }
 
 /* NAVBAR SEARCH BAR START */
 .navbar__search-container {
     flex: 1;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: "Courier New", Courier, monospace;
     font-size: 16px;
     display: flex;
     align-items: center;
@@ -76,11 +76,14 @@
     border-radius: 0;
     border-width: 0px;
     padding: 0 13px;
+    outline: none;
+    appearance: none;
 }
 
 .navbar__search:focus,
 .navbar__search:hover {
     outline: none;
+    appearance: none;
 }
 
 .navbar__search-btn {
@@ -88,15 +91,16 @@
     height: 40px;
     border-radius: 0 8px 8px 0;
     /* background-color: #e9c46a; */
-    background-color: #ff69cd;
-    background-image: url('/images/icons-search.png');
+    /* background-color: #ffb433; */
+    background-color: #e3a27c;
+    background-image: url("/images/icons-search.png");
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 20px 20px;
+    background-size: 24px 24px;
 }
 
 .navbar__search-btn:hover {
-    background-color: #ff24b6;
+    background-color: #ca8961;
     transition: all 0.3s ease 0s;
 }
 
@@ -107,7 +111,7 @@
 .navbar__category {
     background-image: none;
 
-    font-family: Georgia, Times, 'Times New Roman', serif;
+    font-family: Georgia, Times, "Times New Roman", serif;
     font-size: 0.8em;
     height: 40px;
     border-radius: 8px 0 0 8px;
@@ -163,9 +167,15 @@
 
 .navbar__link:hover {
     /* background-color: #264754; */
-    background-color: #553261;
-    color: #ff63b9;
+    /* background-color: #553261; */
+    background-color: #df4d05;
+    /* color: #ffc583; */
+    transform: scale(1.05);
     transition: all 0.3s ease 0s;
+}
+
+.navbar__link:active {
+    transform: scale(0.95); /* Apply scale down effect when link is active (clicked) */
 }
 
 .navbar__btn-image {
@@ -178,9 +188,14 @@
 
 .navbar__btn-image:hover {
     /* background-color: #264754; */
-    background-color: #553261;
-    color: #ff63b9;
+    background-color: #df4d05;
+    color: #c7c7c7;
+    transform: scale(1.05);
     transition: all 0.3s ease 0s;
+}
+
+.navbar__btn-image:active {
+    transform: scale(0.95); /* Apply scale down effect when link is active (clicked) */
 }
 
 .navbar__image-btn {

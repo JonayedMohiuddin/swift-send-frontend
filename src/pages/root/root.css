@@ -8,6 +8,26 @@
     src: url("/assets/roboto-fonts/Roboto-Medium.woff2") format("woff2");
 }
 
+@font-face {
+    font-family: "amazon-ember-bd";
+    src: url("/assets/amazon-fonts/AmazonEmber_Bd.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "amazon-ember-he";
+    src: url("/assets/amazon-fonts/AmazonEmber_He.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "amazon-ember-rg";
+    src: url("/assets/amazon-fonts/AmazonEmber_Rg.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "amazon-ember-lt";
+    src: url("/assets/amazon-fonts/AmazonEmber_Lt.ttf") format("truetype");
+}
+
 :root {
     --color-primary: #2d6074;
     --color-secondary: #2a9d8f;
@@ -28,8 +48,4 @@ body {
     font-size: 1rem;
     color: #212529;
     background-color: #eff0f5;
-}
-
-html {
-    font-size: 20px;
 }

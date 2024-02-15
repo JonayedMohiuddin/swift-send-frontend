@@ -53,8 +53,8 @@ export default function Signup() {
                                     <div className="mt-5">
                                         <InputField id="confirmation-password-input" name="password" type="password" placeholder="Confirm Password" autocomplete="new-password" required />
                                     </div>
-                                    <div className="mt-5">
-                                        <input id="agreement-checkbox" type="checkbox" className="border border-gray-400 mr-2" required />
+                                    <div className="flex flex-row justify-start items-center mt-5">
+                                        <input id="agreement-checkbox" type="checkbox" className="border border-gray-400 mr-2 w-4 h-4" required />
                                         <span>
                                             I accept the{" "}
                                             <a href="#" className="text-purple-600 font-semibold hover:text-purple-500">

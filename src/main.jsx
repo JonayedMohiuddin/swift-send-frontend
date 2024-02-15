@@ -14,13 +14,13 @@ import ProductDetail from "./pages/product-detail/product-detail";
 import { productDetailLoader } from "./pages/product-detail/product-detail-controller";
 
 import Login from "./pages/login/login";
-import { loginAction } from "./pages/login/login-controller";
+import { loginLoader, loginAction } from "./pages/login/login-controller";
 
 import Signup from "./pages/signup/signup";
 import { signupAction } from "./pages/signup/signup-controller";
 
 import Cart from "./pages/cart/cart";
-
+import { cartLoader } from "./pages/cart/cart-controller";
 
 const router = createBrowserRouter([
     {
@@ -46,10 +46,12 @@ const router = createBrowserRouter([
             {
                 path: "/cart",
                 element: <Cart />,
+                loader: cartLoader,
             },
             {
                 path: "/login",
                 element: <Login />,
+                loader: loginLoader,
                 action: loginAction,
             },
             {

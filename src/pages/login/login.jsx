@@ -1,10 +1,11 @@
-import { Form, Link, useActionData } from "react-router-dom";
+import { Form, Link, useActionData, useLoaderData } from "react-router-dom";
 
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
 import InputField from "../../components/form-components/inputField";
 
 export default function Login() {
+    const { errorMessage } = useLoaderData();
     const errors = useActionData();
 
     return (
@@ -12,7 +13,14 @@ export default function Login() {
             {errors?.isError && (
                 <div className="flex flex-row mx-auto mb-5 w-full lg:w-2/3 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
                     <ExclamationTriangleIcon className="mr-4 h-6 w-6 text-red-400" />
-                    {errors?.errorMessage? errors.errorMessage : "Error in signin. Please try again."}
+                    {errors?.errorMessage ? errors.errorMessage : "Error in signin. Please try again."}
+                </div>
+            )}
+
+            {errorMessage && (
+                <div className="flex flex-row mx-auto mb-5 w-full lg:w-2/3 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                    <ExclamationTriangleIcon className="mr-4 h-6 w-6 text-red-400" />
+                    {errorMessage ? errorMessage : "Please login to access the item."}
                 </div>
             )}
 
@@ -57,7 +65,7 @@ export default function Login() {
                                     </div>
                                 </div>
                                 <div className="mt-2">
-                                    <InputField name="password" id="password-input-field"  type="password" autocomplete="current-password" required />
+                                    <InputField name="password" id="password-input-field" type="password" autocomplete="current-password" required />
                                 </div>
                             </div>
 

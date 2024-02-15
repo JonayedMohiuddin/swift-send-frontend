@@ -6,12 +6,12 @@ export async function loginAction({ request, params }) {
 
     console.log(loginInfo);
 
-    // Send the signupInfo to the server
     const response = await fetch("http://localhost:3000/auth/login", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
+        credentials: "include", // Include credentials (cookies, authorization headers)
         body: JSON.stringify(loginInfo),
     });
 
@@ -21,6 +21,10 @@ export async function loginAction({ request, params }) {
 
     if (response.ok) {
         console.log("Login successful.");
+
+        const accessToken = data.accessToken;
+        localStorage.setItem("accessToken", accessToken);
+
         return redirect("/catalog");
     } else {
         console.log("Error in login. Please try again.");
@@ -30,4 +34,12 @@ export async function loginAction({ request, params }) {
     }
 
     return errors;
+}
+
+export function loginLoader({ request }) {
+    const url = new URL(request.url);
+    const searchParams = url.searchParams;
+    const errorMessage = searchParams.get("errorMessage");
+
+    return { errorMessage };
 }

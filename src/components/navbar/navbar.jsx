@@ -1,4 +1,4 @@
-import { Form, Link, useLoaderData, useSubmit } from "react-router-dom";
+import { Form, Link, redirect, useLoaderData, useNavigate, useSubmit } from "react-router-dom";
 
 import { ShoppingCartIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 import "./navbar.css";
@@ -6,6 +6,30 @@ import "./navbar.css";
 export default function Navbar() {
     const { categories, currentSelectedCategory, currentSearch } = useLoaderData();
     const submit = useSubmit();
+    const navigate = useNavigate();
+
+    async function handleLogout() {
+        try {
+            const response = await fetch("http://localhost:3000/auth/logout", {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                // body: JSON.stringify({}), // include a request body if required
+            });
+
+            if (response.ok) {
+                console.log("Logout successful");
+            } else {
+                console.error("Logout failed");
+            }
+        } catch (error) {
+            console.error("Error during logout:", error);
+        }
+
+        navigate("/catalog");
+    }
 
     return (
         <>
@@ -55,6 +79,13 @@ export default function Navbar() {
                     <Link to="/signup" className="navbar__link mr-5">
                         Sign Up
                     </Link>
+
+                    <div className="p-0 m-0 mr-3 w-[2px] h-[30px] bg-white"></div>
+
+                    <button className="navbar__link mr-5" onClick={handleLogout}>
+                        Logout
+                    </button>
+
                     <Link className="navbar__btn-image" to="/cart">
                         <ShoppingCartIcon className="w-7 mt-0.5" />
                     </Link>
