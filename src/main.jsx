@@ -20,7 +20,7 @@ import Signup from "./pages/signup/signup";
 import { signupAction } from "./pages/signup/signup-controller";
 
 import Cart from "./pages/cart/cart";
-import { cartLoader } from "./pages/cart/cart-controller";
+import { cartLoader, cartAction } from "./pages/cart/cart-controller";
 
 const router = createBrowserRouter([
     {
@@ -47,6 +47,7 @@ const router = createBrowserRouter([
                 path: "/cart",
                 element: <Cart />,
                 loader: cartLoader,
+                action: cartAction,
             },
             {
                 path: "/login",

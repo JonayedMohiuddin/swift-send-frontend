@@ -8,6 +8,9 @@ export default {
                 'ember-regular' : ['amazon-ember-rg', 'sans-serif'],
                 'ember-bold' : ['amazon-ember-bd', 'sans-serif'],
                 'ember-heavy' : ['amazon-ember-he', 'sans-serif'],
+            },
+            colors: {
+                'daraz-orange': '#f85606',
             }
         }
     },

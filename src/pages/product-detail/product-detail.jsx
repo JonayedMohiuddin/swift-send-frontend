@@ -2,12 +2,35 @@ import { useLoaderData } from "react-router-dom";
 import { useState } from "react";
 
 import "./product-detail.css";
-import QuantityManager from "./quantity-manager";
+import QuantityManager from "../../components/QuantityManager/quantity-manager";
 
 export default function ProductDetail() {
     const { product } = useLoaderData();
 
     const [quantity, setQuantity] = useState(1);
+
+    async function handleAddToCart() {
+        const response = await fetch("http://localhost:3000/cart/add/", {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ product_id: product.ID, quantity: quantity }),
+        });
+
+        const data = await response.json();
+
+        if (response.status === 401) {
+            window.location.href = "/login?errorMessage=" + encodeURIComponent("Please login to add to cart.");
+        } else if (response.status !== 200) {
+            alert("Error in adding to cart. Please try again.");
+        } else {
+            alert("Added to cart successfully.");
+        }
+
+        setQuantity(1);
+    }
 
     return (
         <div className="detail-container">
@@ -33,11 +56,13 @@ export default function ProductDetail() {
                     </a>
                 </div>
                 <div className="product-detail__split"></div>
-                <div className="product-detail__price">&#x9F3; {product.PRICE}</div>
+                <div className="product-detail__price mb-4">&#x9F3; {product.PRICE}</div>
+
                 <QuantityManager quantity={quantity} setQuantity={setQuantity} />
+
                 <div className="product-detail__button-grp">
                     <button className="product-detail__buy-now-btn js-buy-now-btn">Buy Now</button>
-                    <button className="product-detail__add-to-cart-btn js-add-to-cart-btn" onClick={() => {}}>
+                    <button className="product-detail__add-to-cart-btn js-add-to-cart-btn" onClick={handleAddToCart}>
                         Add to Cart
                     </button>
                 </div>
