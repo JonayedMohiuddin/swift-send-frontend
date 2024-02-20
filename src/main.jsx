@@ -13,14 +13,23 @@ import { productLoader } from "./pages/catalog/catalog-controller";
 import ProductDetail from "./pages/product-detail/product-detail";
 import { productDetailLoader } from "./pages/product-detail/product-detail-controller";
 
-import Login from "./pages/login/login";
-import { loginLoader, loginAction } from "./pages/login/login-controller";
-
-import Signup from "./pages/signup/signup";
-import { signupAction } from "./pages/signup/signup-controller";
-
 import Cart from "./pages/cart/cart";
 import { cartLoader, cartAction } from "./pages/cart/cart-controller";
+
+import UsersLogin from "./pages/users-login/users-login";
+import { usersLoginLoader, usersLoginAction } from "./pages/users-login/users-login-controller";
+
+import UsersSignup from "./pages/users-signup/users-signup";
+import { usersSignupAction } from "./pages/users-signup/users-signup-controller";
+
+import SupplierSignup from "./pages/supplier-signup/supplier-signup";
+import { supplierSignupAction } from "./pages/supplier-signup/supplier-signup-controller";
+
+import SupplierLogin from "./pages/supplier-login/supplier-login";
+import { supplierLoginAction } from "./pages/supplier-login/supplier-login-controller";
+
+// import Supplier from "./pages/supplier/supplier";
+// import { supplierLoader } from "./pages/supplier/supplier-controller";
 
 const router = createBrowserRouter([
     {
@@ -50,16 +59,32 @@ const router = createBrowserRouter([
                 action: cartAction,
             },
             {
-                path: "/login",
-                element: <Login />,
-                loader: loginLoader,
-                action: loginAction,
+                path: "/users/login",
+                element: <UsersLogin />,
+                loader: usersLoginLoader,
+                action: usersLoginAction,
             },
             {
-                path: "/signup",
-                element: <Signup />,
-                action: signupAction,
+                path: "/users/signup",
+                element: <UsersSignup />,
+                action: usersSignupAction,
             },
+            {
+                path: "/supplier/signup",
+                element: <SupplierSignup />,
+                action: supplierSignupAction,
+            },
+            {
+                path: "/supplier/login",
+                element: <SupplierLogin />,
+                action: supplierLoginAction,
+            },
+
+            // {
+            //     path: "/supplier",
+            //     element: <Supplier />,
+            //     loader: supplierLoader,
+            // }
         ],
     },
 ]);

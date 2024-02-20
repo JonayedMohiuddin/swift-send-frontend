@@ -69,14 +69,14 @@ export default function Navbar() {
                         <button className="navbar__search-btn"></button>
                     </Form>
 
-                    <Link to="/login" className="navbar__link mr-3">
+                    <Link to="/users/login" className="navbar__link mr-3">
                         <UserCircleIcon className="w-5" />
                         Sign in
                     </Link>
 
                     <div className="p-0 m-0 mr-3 w-[2px] h-[30px] bg-white"></div>
 
-                    <Link to="/signup" className="navbar__link mr-5">
+                    <Link to="/users/signup" className="navbar__link mr-5">
                         Sign Up
                     </Link>
 

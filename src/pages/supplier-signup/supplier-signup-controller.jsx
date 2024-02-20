@@ -1,9 +1,10 @@
 import { Form, useLoaderData, redirect, useNavigate } from "react-router-dom";
 
-export async function signupAction({ request, params }) {
+export async function supplierSignupAction({ request, params }) {
     const formData = await request.formData();
     const signupInfo = Object.fromEntries(formData);
-
+    signupInfo.userType = "supplier";
+    
     console.log(signupInfo);
 
     // Send the signupInfo to the server

@@ -1,9 +1,18 @@
-import { Form, useLoaderData, redirect, useNavigate } from "react-router-dom";
+import { redirect } from "react-router-dom";
 
-export async function loginAction({ request, params }) {
+export function supplierLoginLoader({ request }) {
+    const url = new URL(request.url);
+    const searchParams = url.searchParams;
+    const errorMessage = searchParams.get("errorMessage");
+
+    return { errorMessage };
+}
+
+export async function supplierLoginAction({ request, params }) {
     const formData = await request.formData();
     const loginInfo = Object.fromEntries(formData);
-
+    loginInfo.userType = "supplier";
+    
     console.log(loginInfo);
 
     const response = await fetch("http://localhost:3000/auth/login", {
@@ -34,12 +43,4 @@ export async function loginAction({ request, params }) {
     }
 
     return errors;
-}
-
-export function loginLoader({ request }) {
-    const url = new URL(request.url);
-    const searchParams = url.searchParams;
-    const errorMessage = searchParams.get("errorMessage");
-
-    return { errorMessage };
 }

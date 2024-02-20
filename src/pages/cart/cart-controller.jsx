@@ -5,7 +5,7 @@ export async function cartLoader({ request }) {
     const data = await response.json();
 
     if (response.status === 401) {
-        return redirect("/login?errorMessage=" + encodeURIComponent("Please login to view your cart."));
+        return redirect("/users/login?errorMessage=" + encodeURIComponent("Please login to view your cart."));
     } else if (response.status !== 200) {
         return { errorMessage: "Error in fetching cart items. Please try again." };
     }

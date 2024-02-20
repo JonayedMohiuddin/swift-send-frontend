@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer utilities {
-    @responsive {
+   
       .overflow-ellipsis-1 {
         overflow: hidden;
         display: -webkit-box;
@@ -21,6 +21,6 @@
       }
   
       /* Add more responsive classes as needed */
-    }
+    
   }
   

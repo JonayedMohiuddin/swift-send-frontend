@@ -13,7 +13,7 @@ export default function Footer() {
       </div>
       <hr className="my-3 border-blue-gray-50" />
       <p color="blue-gray" className="text-center font-normal text-black">
-        &copy; 2023 Jonayed Mohiuddin
+        &copy; 2023 Jonayed Mohiuddin and Elias Hasbi
       </p>
     </footer>
   );
