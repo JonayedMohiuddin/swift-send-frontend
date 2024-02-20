@@ -1,10 +1,10 @@
-import { useLoaderData, Form, useNavigate } from "react-router-dom";
+import { useLoaderData, useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 import InputField from "../../components/form-components/inputField";
 
 import QuantityManager from "../../components/QuantityManager/quantity-manager";
 
-import { TrashIcon, HeartIcon, ShareIcon } from "@heroicons/react/24/outline";
+import { TrashIcon, HeartIcon, ShareIcon, ShoppingCartIcon } from "@heroicons/react/24/outline";
 
 /*
 "cartItems": [
@@ -64,6 +64,13 @@ export default function Cart() {
         <>
             <div className="flex flex-row font-[amazon-ember-lt] mb-10 gap-x-2">
                 <div className="w-3/4 flex flex-col gap-y-7">
+                    {cartItems.length === 0 && (
+                        <div className="flex flex-col bg-white p-3 rounded-lg shadow">
+                            <div className="flex flex-row text-lg font-bold text-daraz-orange mb-5 font-ember-light"><ShoppingCartIcon className="w-8 pr-2"/> Your cart is empty</div>
+                            <div className="text-base font-ember-light">You have no items in your cart. Start adding items to your cart.</div>
+                            <Link to="/catalog" className="text-lg font-ember-regular text-center h-9 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md py-1 px-2 mt-5">Continue shopping</Link>
+                        </div>
+                    )}
                     {/* START */}
                     {shopProducts.map((shop) => (
                         <div key={shop.supplierName} className="flex flex-col bg-white pt-2 rounded-lg shadow">
@@ -95,7 +102,7 @@ export default function Cart() {
                     <div className="flex flex-col bg-white p-3 sticky top-20 rounded-lg">
                         <div className="text-lg font-bold text-daraz-orange mb-5 font-ember-light">Order Summary</div>
                         <div className="flex flex-row justify-between mb-3">
-                            <div className="text-base font-ember-light">Subtotal ({4} items)</div>
+                            <div className="text-base font-ember-light">Subtotal {cartItems.length} items</div>
                             <div className="text-base font-ember-light">৳ {totalPrice - savings}</div>
                         </div>
                         <div className="flex flex-row justify-between mb-3">
@@ -160,7 +167,7 @@ function CartItem({ cartItem, totalPrice, saving, setTotalPrice, setSavings }) {
             return;
         }
 
-        navigate("/cart");
+        window.location.reload();
     }
 
     return (
