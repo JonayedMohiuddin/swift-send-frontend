@@ -1,12 +1,12 @@
 import { useLoaderData } from "react-router-dom";
 import { useState } from "react";
 
-import "./product-detail.css";
+import "./supplier-product-detail.css";
 import QuantityManager from "../../components/QuantityManager/quantity-manager";
 
-import { HeartIcon, ShareIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { HeartIcon, ShareIcon, TrashIcon, ArrowPathIcon } from "@heroicons/react/24/outline";
 
-export default function ProductDetail() {
+export default function SupplierProductDetail() {
     const { product } = useLoaderData();
     const [quantity, setQuantity] = useState(1);
 
@@ -59,7 +59,7 @@ export default function ProductDetail() {
                     />
                 </div>
                 <div className="product-detail">
-                    <div className="product-detail__name line-clamp-3">{product.NAME}</div>
+                    <div className="product-detail__name line-clamp-4">{product.NAME}</div>
                     <div className="product-detail__rating-container">
                         <div className="product-detail__ratings">
                             <div className="product-detail__empty-stars"></div>
@@ -78,12 +78,14 @@ export default function ProductDetail() {
                         <div className="product-detail__discount-price">&#x9F3; {product.PRICE - product.PRICE * product.DISCOUNT}</div>
                     </div>
 
-                    <QuantityManager quantity={quantity} setQuantity={setQuantity} />
+                    {/* <QuantityManager quantity={quantity} setQuantity={setQuantity} /> */}
 
                     <div className="product-detail__button-grp">
-                        <button className="product-detail__buy-now-btn">Buy Now</button>
-                        <button className="product-detail__add-to-cart-btn " onClick={handleAddToCart}>
-                            Add to Cart
+                        <button className="pl-3 flex flex-row gap-2 font-ember-regular text-sm p-2 bg-green-700 text-white rounded-md w-40 hover:bg-green-600 hover:underline">
+                            <ArrowPathIcon className="h-5 w-5" /> Update Product
+                        </button>
+                        <button className="pl-3 flex flex-row gap-2 font-ember-regular text-sm p-2 bg-red-700 text-white rounded-md w-40 hover:bg-red-600 hover:underline">
+                            <TrashIcon className="h-5 w-5" /> Remove Product
                         </button>
                     </div>
                 </div>

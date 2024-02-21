@@ -26,10 +26,19 @@ import SupplierSignup from "./pages/supplier-signup/supplier-signup";
 import { supplierSignupAction } from "./pages/supplier-signup/supplier-signup-controller";
 
 import SupplierLogin from "./pages/supplier-login/supplier-login";
-import { supplierLoginAction } from "./pages/supplier-login/supplier-login-controller";
+import { supplierLoginAction, supplierLoginLoader } from "./pages/supplier-login/supplier-login-controller";
 
-// import Supplier from "./pages/supplier/supplier";
-// import { supplierLoader } from "./pages/supplier/supplier-controller";
+import Supplier from "./pages/supplier/supplier";
+import { supplierLoader } from "./pages/supplier/supplier-controller";
+
+import AddProduct from "./pages/add-product/add-product";
+import { addProductAction, addProductLoader } from "./pages/add-product/add-product-controller";
+
+import UpdateProduct from "./pages/update-product/update-product";
+import { updateProductLoader, updateProductAction } from "./pages/update-product/update-product-controller";
+
+import SupplierProductDetail from "./pages/supplier-product-detail/supplier-product-detail";
+import { supplierProductDetailLoader } from "./pages/supplier-product-detail/supplier-product-detail-controller";
 
 import ErrorPage from "./pages/error/error-page";
 
@@ -80,13 +89,30 @@ const router = createBrowserRouter([
                 path: "/supplier/login",
                 element: <SupplierLogin />,
                 action: supplierLoginAction,
+                loader: supplierLoginLoader,
             },
-
-            // {
-            //     path: "/supplier",
-            //     element: <Supplier />,
-            //     loader: supplierLoader,
-            // }
+            {
+                path: "/supplier",
+                element: <Supplier />,
+                loader: supplierLoader,
+            },
+            {
+                path: "/supplier/:id",
+                element: <SupplierProductDetail />,
+                loader: supplierProductDetailLoader,
+            },
+            {
+                path: "/supplier/addProduct",
+                element: <AddProduct />,
+                action: addProductAction,
+                loader: addProductLoader,
+            },
+            {
+                path: "/supplier/updateProduct/:id",
+                element: <UpdateProduct />,
+                loader: updateProductLoader,
+                action: updateProductAction,
+            }
         ],
     },
 ]);

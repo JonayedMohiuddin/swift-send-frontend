@@ -11,7 +11,17 @@ export default function Catalog() {
         <>
             <div className="product-card-container">
                 {products.map((product) => (
-                    <ProductCard key={product.ID} product={product} />
+                    <ProductCard
+                        key={product.ID}
+                        product={product}
+                        productName={product.NAME}
+                        productPrice={product.PRICE}
+                        productImageUrl={product.IMAGE_URL}
+                        productDiscount={product.DISCOUNT}
+                        productRatingCount={product.RATING_COUNT}
+                        productTotalRating={product.TOTAL_RATING}
+                        redirectionUrl={`/catalog/${product.ID}`}
+                    />
                 ))}
             </div>
 

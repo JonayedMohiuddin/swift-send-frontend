@@ -48,6 +48,7 @@
     width: 215px;
     height: 215px;
     object-fit: fill;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
     /* border-radius: 4px 4px 0 0; */
     margin: 0;
@@ -71,7 +72,7 @@
     border-radius: 0px 0px 10px 10px;
     box-sizing: border-box;
 
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .product-card__name {

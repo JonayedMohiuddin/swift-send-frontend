@@ -30,11 +30,7 @@ export async function supplierLoginAction({ request, params }) {
 
     if (response.ok) {
         console.log("Login successful.");
-
-        const accessToken = data.accessToken;
-        localStorage.setItem("accessToken", accessToken);
-
-        return redirect("/catalog");
+        return redirect("/supplier");
     } else {
         console.log("Error in login. Please try again.");
 

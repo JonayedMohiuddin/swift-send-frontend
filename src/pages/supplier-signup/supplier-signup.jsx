@@ -1,6 +1,6 @@
 import { Form, useActionData } from "react-router-dom";
 
-import InputField from "../../components/form-components/inputField";
+import InputField from "../../components/form-components/InputField";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
 export default function SupplierSignup() {
@@ -18,7 +18,7 @@ export default function SupplierSignup() {
             <div className="pb-10">
                 <div className="container mx-auto">
                     <div className="flex flex-row lg:flex-row w-12/12 lg:w-10/12  rounded-xl mx-auto shadow-lg overflow-hidden bg-slate-300 bg-opacity-90">
-                        <div className="w-full lg:w-1/2 flex flex-col items-center justify-center p-12 bg-no-repeat bg-cover bg-center" style={{ backgroundImage: 'url("images/login-bg-2.jpg")' }}>
+                        <div className="w-full lg:w-1/2 flex flex-col items-center justify-center p-12 bg-no-repeat bg-cover bg-center" style={{ backgroundImage: 'url("/images/login-bg-2.jpg")' }}>
                             <h1 className="text-white text-3xl mb-3">Welcome</h1>
                             <div>
                                 <p className="text-white">

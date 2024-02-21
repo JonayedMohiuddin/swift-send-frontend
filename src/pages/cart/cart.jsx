@@ -1,6 +1,6 @@
 import { useLoaderData, useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
-import InputField from "../../components/form-components/inputField";
+import InputField from "../../components/form-components/InputField";
 
 import QuantityManager from "../../components/QuantityManager/quantity-manager";
 
@@ -103,15 +103,15 @@ export default function Cart() {
                         <div className="text-lg font-bold text-daraz-orange mb-5 font-ember-light">Order Summary</div>
                         <div className="flex flex-row justify-between mb-3">
                             <div className="text-base font-ember-light">Subtotal {cartItems.length} items</div>
-                            <div className="text-base font-ember-light">৳ {totalPrice - savings}</div>
+                            <div className="text-base font-ember-light">৳ {Math.ceil(totalPrice)}</div>
                         </div>
                         <div className="flex flex-row justify-between mb-3">
                             <div className="text-base font-ember-light">Savings</div>
-                            <div className="text-base font-ember-light">৳ {savings}</div>
+                            <div className="text-base font-ember-light">৳ {Math.ceil(savings)}</div>
                         </div>
                         <div className="flex flex-row justify-between mb-3">
                             <div className="text-base font-ember-light">Total</div>
-                            <div className="font-bold font-ember-light text-daraz-orange">৳ {totalPrice}</div>
+                            <div className="font-bold font-ember-light text-daraz-orange">৳ {Math.ceil(totalPrice - savings)}</div>
                         </div>
                         <div className="flex flex-row justify-between mb-3 gap-x-2">
                             <InputField name="code" autocomplete="off" label="Promo code" placeholder="Enter code" />
@@ -203,8 +203,8 @@ function CartItem({ cartItem, totalPrice, saving, setTotalPrice, setSavings }) {
                 </div>
 
                 <div className="flex flex-col mt-2">
-                    <div className="text-lg font-bold font-[amazon-ember-rg] text-daraz-orange mx-auto mb-2">৳ {cartItem.PRICE * quantity}</div>
-                    <div className="text-xs font-[amazon-ember-lt] mx-auto mb-3 line-through text-zinc-500">৳ {cartItem.PRICE * (1 - cartItem.DISCOUNT) * quantity}</div>
+                    <div className="text-lg font-bold font-[amazon-ember-rg] text-daraz-orange mx-auto mb-2">৳ {Math.ceil(cartItem.PRICE * (1 - cartItem.DISCOUNT) * quantity)}</div>
+                    <div className="text-xs font-[amazon-ember-lt] mx-auto mb-3 line-through text-zinc-500">৳ {Math.ceil(cartItem.PRICE * quantity)}</div>
                     <QuantityManager quantity={quantity} setQuantity={onQuantityChange} />
                 </div>
             </div>{" "}

@@ -2,7 +2,7 @@ import { Form, Link, useActionData, useLoaderData } from "react-router-dom";
 
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
-import InputField from "../../components/form-components/inputField";
+import InputField from "../../components/form-components/InputField";
 
 export default function UsersLogin() {
     const { errorMessage } = useLoaderData();
@@ -80,6 +80,15 @@ export default function UsersLogin() {
                     </div>
                 </div>
                 <img src="/images/login-bg.jpg" alt="login" className="hidden sm:block w-80 h-auto rounded-md rounded-l-none shadow-lg" /> {/*border-slate-800 border-l-0*/}
+            </div>
+
+            <div className="flex flex-row justify-end mt-5 mb-5 gap-8">
+                <Link to="/supplier/login" className="font-semibold leading-6 hover:text-indigo-500 hover:underline">
+                    Are you a Seller?
+                </Link>
+                <Link to="/supplier/signup" className="font-semibold leading-6 hover:text-indigo-500 hover:underline">
+                    Become a Seller
+                </Link>
             </div>
         </>
     );

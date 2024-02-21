@@ -19,7 +19,7 @@ export async function supplierSignupAction({ request, params }) {
     const errors = {};
 
     if (response.status === 201) {
-        return redirect("/login");
+        return redirect("/supplier/login");
     } else {
         const data = await response.json();
         if(data.errorMessage && data.errorMessage.length > 0) errors.errorMessage = data.errorMessage;
