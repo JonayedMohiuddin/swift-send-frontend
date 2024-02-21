@@ -176,7 +176,7 @@ function CartItem({ cartItem, totalPrice, saving, setTotalPrice, setSavings }) {
                 <img src={cartItem.IMAGE_URL} alt="product" className="w-[140px] h-[140px]" />
 
                 <div className="flex flex-col ml-3 mt-2 mr-auto">
-                    <div className="font-bold h-[2lh] overflow-ellipsis-2">{cartItem.PRODUCT_NAME} </div>
+                    <div className="font-bold h-[2lh] line-clamp-2">{cartItem.PRODUCT_NAME} </div>
                     <div className="flex flex-row gap-x-2 mt-4">
                         <button
                             name="addToWishlist"

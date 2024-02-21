@@ -31,6 +31,8 @@ import { supplierLoginAction } from "./pages/supplier-login/supplier-login-contr
 // import Supplier from "./pages/supplier/supplier";
 // import { supplierLoader } from "./pages/supplier/supplier-controller";
 
+import ErrorPage from "./pages/error/error-page";
+
 const router = createBrowserRouter([
     {
         path: "/",
