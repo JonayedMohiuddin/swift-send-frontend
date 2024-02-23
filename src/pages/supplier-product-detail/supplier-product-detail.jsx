@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, Link } from "react-router-dom";
 import { useState } from "react";
 
 import "./supplier-product-detail.css";
@@ -8,7 +8,6 @@ import { HeartIcon, ShareIcon, TrashIcon, ArrowPathIcon } from "@heroicons/react
 
 export default function SupplierProductDetail() {
     const { product } = useLoaderData();
-    const [quantity, setQuantity] = useState(1);
 
     console.log(product);
 
@@ -19,30 +18,29 @@ export default function SupplierProductDetail() {
 
     let ratingBarWidth = (rating / 5) * 100;
 
-    async function handleAddToCart() {
-        const response = await fetch("http://localhost:3000/cart/add/", {
+    async function handleRemoveProduct() {
+        console.log("Removing product");
+        const response = await fetch("http://localhost:3000/supplier/removeProduct", {
             method: "POST",
-            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ product_id: product.ID, quantity: quantity }),
+            body: JSON.stringify({ productId: product.ID }),
+            credentials: "include",
         });
 
         const data = await response.json();
 
         if (response.status === 401) {
-            window.location.href = "/users/login?errorMessage=" + encodeURIComponent("Please login to add to cart.");
+            window.location.href = "/supplier/login?errorMessage=" + encodeURIComponent("Please login to remove product.");
         } else if (response.status === 403) {
-            alert("Sign in using user account to access this page.");
-            window.location.href = "/users/login?errorMessage=" + encodeURIComponent("Please login using user account to add to cart.");
+            alert("Sign in using supplier account to access this page.");
+            window.location.href = "/supplier/login?errorMessage=" + encodeURIComponent("Please login using supplier account to remove product.");
         } else if (response.status !== 200) {
-            alert("Error in adding to cart. Please try again.");
+            alert("Error in removing product. Please try again.");
         } else {
-            alert("Added to cart successfully.");
+            window.location.href = "/supplier";
         }
-
-        setQuantity(1);
     }
 
     return (
@@ -74,17 +72,23 @@ export default function SupplierProductDetail() {
                     </div>
                     <div className="product-detail__split"></div>
                     <div className="flex flex-row gap-4 items-center mb-4">
-                        <div className="product-detail__price font-ember-bold">&#x9F3; {product.PRICE}</div>
-                        <div className="product-detail__discount-price">&#x9F3; {product.PRICE - product.PRICE * product.DISCOUNT}</div>
+                        <div className="product-detail__price font-ember-bold">&#x9F3; {(product.PRICE - product.PRICE * product.DISCOUNT).toFixed(2)}</div>
+                        <div className="product-detail__discount-price">&#x9F3; {product.PRICE.toFixed(2)}</div>
                     </div>
 
                     {/* <QuantityManager quantity={quantity} setQuantity={setQuantity} /> */}
 
                     <div className="product-detail__button-grp">
-                        <button className="pl-3 flex flex-row gap-2 font-ember-regular text-sm p-2 bg-green-700 text-white rounded-md w-40 hover:bg-green-600 hover:underline">
+                        <Link
+                            to={`/supplier/updateProduct/${product.ID}`}
+                            className="pl-3 flex flex-row gap-2 font-ember-regular text-sm p-2 bg-green-700 text-white rounded-md w-40 hover:bg-green-600 hover:underline"
+                        >
                             <ArrowPathIcon className="h-5 w-5" /> Update Product
-                        </button>
-                        <button className="pl-3 flex flex-row gap-2 font-ember-regular text-sm p-2 bg-red-700 text-white rounded-md w-40 hover:bg-red-600 hover:underline">
+                        </Link>
+                        <button
+                            onClick={handleRemoveProduct}
+                            className="pl-3 flex flex-row gap-2 font-ember-regular text-sm p-2 bg-red-700 text-white rounded-md w-40 hover:bg-red-600 hover:underline"
+                        >
                             <TrashIcon className="h-5 w-5" /> Remove Product
                         </button>
                     </div>

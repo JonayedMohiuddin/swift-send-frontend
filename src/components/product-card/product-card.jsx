@@ -27,8 +27,8 @@ export default function ProductCard({ product, productName, productPrice, produc
                         <div className="product-card__voucher">Voucher: 7</div>
                     </div>
                     <div className="flex flex-row items-center gap-2">
-                        <div className="product-card__price">&#x9F3; {Math.ceil(productPrice)}</div>
-                        <div className="ml-1 text-gray-500 font-bold line-through">&#x9F3; {Math.ceil(productPrice - productDiscount * productPrice)}</div>
+                        <div className="product-card__price">&#x9F3; {Math.ceil(productPrice - productDiscount * productPrice)}</div>
+                        <div className="ml-1 text-gray-500 font-bold line-through">&#x9F3; {Math.ceil(productPrice)}</div>
                     </div>
                 </div>
             </Link>

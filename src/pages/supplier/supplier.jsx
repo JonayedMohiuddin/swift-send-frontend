@@ -1,6 +1,6 @@
 import { useLoaderData, Link } from "react-router-dom";
 
-import { PlusCircleIcon, HeartIcon, TrashIcon, ShareIcon } from "@heroicons/react/24/outline";
+import { PlusCircleIcon } from "@heroicons/react/24/outline";
 
 import ProductCard from "../../components/product-card/product-card";
 
@@ -14,18 +14,26 @@ export default function Supplier() {
                     <PlusCircleIcon className="h-6 w-6 inline-block mr-2" />
                     Add Product
                 </Link>
-                <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Remove Product</button>
-                <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Update Product</button>
+                {/* <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Remove Product</button>
+                <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Update Product</button> */}
             </div>
 
+            {products.length === 0 && (
+                <div className="flex flex-col gap-4 items-center min-h-52">
+                    <div className="font-ember-light text-center text-3xl font-bold text-gray-600 opacity-35">No products found</div>
+                    <div className="font-ember-light text-center text-3xl font-bold text-gray-600 opacity-35">Add new products</div>
+                </div>
+            )}
+
             <div
-            style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(215px, 1fr))",
-                gap: "40px 15px",
-                margin: "30px auto 60px auto",
-                minWidth: "700px",
-            }}>
+                style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fill, minmax(215px, 1fr))",
+                    gap: "40px 15px",
+                    margin: "30px auto 60px auto",
+                    minWidth: "700px",
+                }}
+            >
                 {products.map((product) => (
                     <ProductCard
                         key={product.PRODUCT_ID}
@@ -43,7 +51,6 @@ export default function Supplier() {
         </>
     );
 }
-
 
 // function ProductItem({ item }) {
 //     return (

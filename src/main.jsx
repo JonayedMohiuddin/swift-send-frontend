@@ -40,6 +40,9 @@ import { updateProductLoader, updateProductAction } from "./pages/update-product
 import SupplierProductDetail from "./pages/supplier-product-detail/supplier-product-detail";
 import { supplierProductDetailLoader } from "./pages/supplier-product-detail/supplier-product-detail-controller";
 
+import UsersOrders from "./pages/users-orders/users-orders";
+import { usersOrdersLoader } from "./pages/users-orders/users-orders-controller";
+
 import ErrorPage from "./pages/error/error-page";
 
 const router = createBrowserRouter([
@@ -81,6 +84,11 @@ const router = createBrowserRouter([
                 action: usersSignupAction,
             },
             {
+                path: "/users/orders",
+                element: <UsersOrders />,
+                loader: usersOrdersLoader,
+            },
+            {
                 path: "/supplier/signup",
                 element: <SupplierSignup />,
                 action: supplierSignupAction,
@@ -112,7 +120,7 @@ const router = createBrowserRouter([
                 element: <UpdateProduct />,
                 loader: updateProductLoader,
                 action: updateProductAction,
-            }
+            },
         ],
     },
 ]);

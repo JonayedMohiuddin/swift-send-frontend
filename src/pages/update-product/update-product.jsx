@@ -1,5 +1,5 @@
 import { Form, useActionData, useLoaderData, useNavigate } from "react-router-dom";
-import InputField from "../../components/form-components/InputField";
+import InputField from "../../components/form-components/inputField";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
 export default function UpdateProduct() {
@@ -28,22 +28,22 @@ export default function UpdateProduct() {
                 <div className="container mx-auto">
                     <div className="w-12/12 lg:w-3/4  rounded-xl mx-auto shadow-lg overflow-hidden bg-slate-300 bg-opacity-90">
                         <div className="flex flex-col w-full py-8 px-10">
-                            <h2 className="text-3xl mb-4 text-center">Add Product</h2>
+                            <h2 className="text-3xl mb-4 text-center">Update Product</h2>
                             <Form id="add-product-form" method="post" role="form">
-                                <div className="grid grid-cols-3 gap-5">
+                                <div className="grid grid-cols-4 gap-5">
                                     <div className="col-span-1">
                                         <p className="text-gray-500">Product Name</p>
                                     </div>
-                                    <div className="col-span-2">
-                                        <InputField id="product-name-input" name="product-name" type="text" autoComplete="product-name" required />
+                                    <div className="col-span-3">
+                                        <InputField id="product-name-input" name="product-name" type="text" autoComplete="product-name" value={product.NAME} style="font-ember-regular text-xs" required />
                                     </div>
 
                                     <div className="col-span-1">
                                         <p className="text-gray-500">Price</p>
                                     </div>
-                                    <div className="col-span-2">
+                                    <div className="col-span-3">
                                         <div className="flex flex-row items-center">
-                                            <InputField id="price-input" name="price" type="number" autoComplete="price" required />
+                                            <InputField id="price-input" name="price" autoComplete="price" value={product.PRICE} style="font-ember-regular" required />
                                             <p className="text-gray-600 ml-2 font-bold text-xl px-5">৳</p>
                                         </div>
                                     </div>
@@ -51,9 +51,9 @@ export default function UpdateProduct() {
                                     <div className="col-span-1">
                                         <p className="text-gray-500">Discount</p>
                                     </div>
-                                    <div className="col-span-2">
+                                    <div className="col-span-3">
                                         <div className="flex flex-row items-center">
-                                            <InputField id="discount-input" name="discount" type="number" autoComplete="discount" />
+                                            <InputField id="discount-input" name="discount" type="number" autoComplete="discount" value={product.DISCOUNT * 100}  style="font-ember-regular" />
                                             <p className="text-gray-600 ml-2 font-bold text-xl px-5 font-ember-bold">%</p>
                                         </div>
                                     </div>
@@ -61,19 +61,20 @@ export default function UpdateProduct() {
                                     <div className="col-span-1">
                                         <p className="text-gray-500">Image Url</p>
                                     </div>
-                                    <div className="col-span-2">
-                                        <InputField id="image-url-input" name="image-url" type="text" autoComplete="image-url" />
+                                    <div className="col-span-3">
+                                        <InputField id="image-url-input" name="image-url" type="text" autoComplete="image-url" value={product.IMAGE_URL}  style="font-ember-regular text-xs" />
                                     </div>
 
                                     <div className="col-span-1">
                                         <p className="text-gray-500">Category</p>
                                     </div>
-                                    <div className="col-span-2">
+                                    <div className="col-span-3">
                                         <select
                                             id="category-select"
                                             name="category"
-                                            className="block pl-3 pr-2 w-full h-10 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            className="font-ember-regular block pl-3 pr-2 w-full h-10 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                             required
+                                            defaultValue={product.CATEGORY_ID}
                                         >
                                             <option value="">Not Selected</option>
                                             {categories.map((category) => (
@@ -84,26 +85,28 @@ export default function UpdateProduct() {
                                         </select>
                                     </div>
 
-                                    <div className="col-span-3">
+                                    <div className="col-span-4">
                                         <p className="text-gray-500 text-center mt-5">Description</p>
                                     </div>
-                                    <div className="col-span-3">
+                                    <div className="col-span-4">
                                         <textarea
                                             id="description-input"
                                             name="description"
-                                            className="block pl-3 pr-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 min-h-24"
+                                            className="font-ember-regular block pl-3 pr-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 min-h-24"
+                                            defaultValue={product.DESCRIPTION}
+                                            style={{ resize: 'vertical' }}
                                         />
                                     </div>
 
-                                    <div className="col-span-1 mt-5">
+                                    <div className="col-span-2 mt-5">
                                         <button onClick={onCancelButonClick} className="rounded-md w-full  bg-red-600  py-2  text-center  text-white  hover:bg-red-500">
                                             Cancel
                                         </button>
                                     </div>
-                                    <div className="col-span-1 mt-5"></div>
-                                    <div className="col-span-1  mt-5">
+                                    {/* <div className="col-span-1 mt-5"></div> */}
+                                    <div className="col-span-2 mt-5">
                                         <button type="submit" className="rounded-md w-full bg-purple-600 py-2 text-center text-white hover:bg-purple-500">
-                                            Add Product
+                                            Update Product
                                         </button>
                                     </div>
                                 </div>

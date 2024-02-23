@@ -23,6 +23,41 @@ export async function addProductLoader({ request }) {
     }
 }
 
+function sanitizeFormData(formData) {
+    let name = formData.get("product-name");
+    let price = formData.get("price");
+    let discount = formData.get("discount");
+    let imageUrl = formData.get("image-url");
+    let categoryId = formData.get("category");
+    let description = formData.get("description");
+
+    discount = discount / 100;
+
+    if (isNaN(discount) || discount < 0 || discount > 1) {
+        discount = 0;
+    }
+
+    if (name === "") {
+        return { ok: false, errorMessage: "Name cannot be empty." };
+    } else if (price === "") {
+        return { ok: false, errorMessage: "Price cannot be empty." };
+    } else if (isNaN(price)) {
+        return { ok: false, errorMessage: "Price must be a number." };
+    } else if (categoryId === "") {
+        return { ok: false, errorMessage: "Category must be selected." };
+    }
+
+    price = parseFloat(price);
+
+    if (price < 0 || price > 1000000) {
+        return { ok: false, errorMessage: "Price must be between 0 and 1000000." };
+    }
+
+    return {
+        ok: true,
+    };
+}
+
 export async function addProductAction({ request }) {
     let formData = await request.formData();
     console.log("formData: ", formData);
@@ -33,6 +68,14 @@ export async function addProductAction({ request }) {
     const imageUrl = formData.get("image-url");
     const categoryId = formData.get("category");
     const description = formData.get("description");
+
+    const errors = {};
+
+    const santize = sanitizeFormData(formData);
+    if (!santize.ok) {
+        errors.errorMessage = santize.errorMessage;
+        return errors;
+    }
 
     discount = discount / 100;
 
@@ -46,9 +89,6 @@ export async function addProductAction({ request }) {
     });
 
     const data = await response.json();
-
-    
-    const errors = {};
 
     if (response.ok) {
         console.log("Product added successfully.");

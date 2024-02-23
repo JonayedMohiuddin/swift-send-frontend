@@ -1,4 +1,13 @@
+import Cookies from 'js-cookie'; 
+
 export async function productLoader({ request }) {
+    const userType = Cookies.get("userType");
+    console.log("userType:", userType);
+
+    if(userType === "supplier") {
+        window.location.href = "/supplier";
+    }
+
     const params = new URLSearchParams();
 
     const url = new URL(request.url);

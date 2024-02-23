@@ -14,6 +14,7 @@ export async function usersSignupAction({ request, params }) {
         headers: {
             "Content-Type": "application/json",
         },
+        credentials: "include", // Include credentials (cookies, authorization headers)
         body: JSON.stringify(signupInfo),
     });
 

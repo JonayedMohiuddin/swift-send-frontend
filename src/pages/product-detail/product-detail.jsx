@@ -4,7 +4,7 @@ import { useState } from "react";
 import "./product-detail.css";
 import QuantityManager from "../../components/QuantityManager/quantity-manager";
 
-import { HeartIcon, ShareIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { HeartIcon, ShareIcon } from "@heroicons/react/24/outline";
 
 export default function ProductDetail() {
     const { product } = useLoaderData();
@@ -74,8 +74,8 @@ export default function ProductDetail() {
                     </div>
                     <div className="product-detail__split"></div>
                     <div className="flex flex-row gap-4 items-center mb-4">
-                        <div className="product-detail__price font-ember-bold">&#x9F3; {product.PRICE}</div>
-                        <div className="product-detail__discount-price">&#x9F3; {product.PRICE - product.PRICE * product.DISCOUNT}</div>
+                        <div className="product-detail__price font-ember-bold">&#x9F3; {(product.PRICE - product.PRICE * product.DISCOUNT).toFixed(2)}</div>
+                        <div className="product-detail__discount-price">&#x9F3; {(product.PRICE).toFixed(2)}</div>
                     </div>
 
                     <QuantityManager quantity={quantity} setQuantity={setQuantity} />
