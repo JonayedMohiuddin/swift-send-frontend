@@ -2,11 +2,20 @@ import { Form, Link, redirect, useLoaderData, useNavigate, useSubmit } from "rea
 
 import { ShoppingCartIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 import "./navbar.css";
+import { useEffect } from "react";
 
 export default function Navbar() {
     const { categories, currentSelectedCategory, currentSearch } = useLoaderData();
     const submit = useSubmit();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (currentSelectedCategory !== undefined && currentSelectedCategory !== "" && currentSelectedCategory !== null) {
+            document.getElementById("category").value = currentSelectedCategory;
+        } else {
+            document.getElementById("category").value = "all";
+        }
+    }, [currentSelectedCategory]);
 
     async function handleLogout() {
         try {
@@ -44,6 +53,7 @@ export default function Navbar() {
                         <select
                             className="navbar__category"
                             name="category"
+                            id="category"
                             defaultValue={currentSelectedCategory}
                             onChange={(event) => {
                                 submit(event.currentTarget.form);
@@ -56,6 +66,7 @@ export default function Navbar() {
                                 </option>
                             ))}
                         </select>
+
                         <input
                             className="navbar__search"
                             name="search"
@@ -76,7 +87,7 @@ export default function Navbar() {
 
                     <div className="p-0 m-0 mr-3 w-[2px] h-[30px] bg-white"></div>
 
-                    <Link to="/users/signup" className="navbar__link mr-5">
+                    <Link to="/users/signup" className="navbar__link mr-3">
                         Sign Up
                     </Link>
 

@@ -26,8 +26,8 @@ export default function Catalog() {
             </div>
 
             <Form action="/catalog" method="get" className="mt-5 mb-7">
-                <input onChange={() => {}} className="hidden" name="search" value={search || ''} ></input>
-                <input onChange={() => {}} className="hidden" name="category" value={category || ''} ></input>
+                <input className="hidden" name="search" defaultValue={search || ''} ></input>
+                <input className="hidden" name="category" defaultValue={category || ''} ></input>
                 <Pagination currentPage={page} lastPage={totalPages} totalProducts={totalProducts}/>
             </Form>
         </>

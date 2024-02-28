@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./main.css";
 
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Navigate  } from "react-router-dom";
 
 import Root from "./pages/root/root";
 import { rootLoader } from "./pages/root/root-controller";
