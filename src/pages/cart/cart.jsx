@@ -29,6 +29,8 @@ import { TrashIcon, HeartIcon, ShareIcon, ShoppingCartIcon } from "@heroicons/re
 export default function Cart() {
     const { cartItems } = useLoaderData();
 
+    const navigate = useNavigate();
+
     // group cart items by supplier
     const shopProducts = [];
     let lastSupplierName = "";
@@ -60,15 +62,56 @@ export default function Cart() {
     const [totalPrice, setTotalPrice] = useState(initTotalPrice);
     const [savings, setSavings] = useState(initSavings);
 
+    /*
+    
+###    
+POST http://localhost:3000/users/orders/add
+Content-Type: application/json
+
+{
+    "list" : [
+        {
+            "productId": 2,
+            "quantity": 555
+        },        
+        {
+            "productId": 1,
+            "quantity": 255
+        },  
+        {
+            "productId": 3,
+            "quantity": 155
+        }
+    ]
+}
+*/
+    async function handleCheckout() {
+        const response = await fetch("http://localhost:3000/users/orders/addFromCart", {
+            method: "POST",
+            credentials: "include",
+        });
+
+        if (response.status !== 200) {
+            console.error("Error in adding order");
+            return;
+        }
+
+        navigate("/users/orders");
+    }
+
     return (
         <>
-            <div className="flex flex-row font-[amazon-ember-lt] mb-10 gap-x-2">
-                <div className="w-3/4 flex flex-col gap-y-7">
+            <div className="flex lg:flex-row flex-col font-[amazon-ember-lt] mb-10 gap-x-2">
+                <div className="lg:w-3/4 w-full flex flex-col gap-y-7">
                     {cartItems.length === 0 && (
                         <div className="flex flex-col bg-white p-3 rounded-lg shadow">
-                            <div className="flex flex-row text-lg font-bold text-daraz-orange mb-5 font-ember-light"><ShoppingCartIcon className="w-8 pr-2"/> Your cart is empty</div>
+                            <div className="flex flex-row text-lg font-bold text-daraz-orange mb-5 font-ember-light">
+                                <ShoppingCartIcon className="w-8 pr-2" /> Your cart is empty
+                            </div>
                             <div className="text-base font-ember-light">You have no items in your cart. Start adding items to your cart.</div>
-                            <Link to="/catalog" className="text-lg font-ember-regular text-center h-9 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md py-1 px-2 mt-5">Continue shopping</Link>
+                            <Link to="/catalog" className="text-lg font-ember-regular text-center h-9 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md py-1 px-2 mt-5">
+                                Continue shopping
+                            </Link>
                         </div>
                     )}
                     {/* START */}
@@ -98,7 +141,7 @@ export default function Cart() {
                     </div> */}
                     {/* END */}
                 </div>
-                <div className="w-1/4">
+                <div className="lg:w-1/4 w-full lg:m-0 mb-8 lg:order-2 order-[-1]">
                     <div className="flex flex-col bg-white p-3 sticky top-20 rounded-lg">
                         <div className="text-lg font-bold text-daraz-orange mb-5 font-ember-light">Order Summary</div>
                         <div className="flex flex-row justify-between mb-3">
@@ -117,7 +160,9 @@ export default function Cart() {
                             <InputField name="code" autocomplete="off" label="Promo code" placeholder="Enter code" />
                             <button className="text-xs font-ember-light bg-cyan-500 text-white rounded-md py-1 px-2 hover:bg-[#cc4705]">Apply</button>
                         </div>
-                        <button className="text-lg font-ember-regular h-9 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md py-1 px-2">Proceed to checkout</button>
+                        <button className="text-lg font-ember-regular min-h-9 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md py-1 px-2" onClick={handleCheckout}>
+                            Proceed to checkout
+                        </button>
                     </div>
                 </div>
             </div>
@@ -126,8 +171,6 @@ export default function Cart() {
 }
 
 function CartItem({ cartItem, totalPrice, saving, setTotalPrice, setSavings }) {
-    const navigate = useNavigate();
-
     const [quantity, setQuantity] = useState(cartItem.QUANTITY);
 
     async function onQuantityChange(newQuantity) {
@@ -193,7 +236,7 @@ function CartItem({ cartItem, totalPrice, saving, setTotalPrice, setSavings }) {
                             <TrashIcon className="w-4 h-4 mr-2" />
                             Remove
                         </button>
-                        <button className="flex flex-row bg-slate-200 hover:text-daraz-orange text-xs font-[amazon-ember-rg] rounded-md py-1 px-2 hover:bg-[#f85606] hover:bg-opacity-15 hover:underline">
+                        <button className="md:flex md:flex-row hidden bg-slate-200 hover:text-daraz-orange text-xs font-[amazon-ember-rg] rounded-md py-1 px-2 hover:bg-[#f85606] hover:bg-opacity-15 hover:underline">
                             <ShareIcon className="w-4 h-4 mr-2" />
                             Share
                         </button>

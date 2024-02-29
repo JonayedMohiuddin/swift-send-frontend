@@ -14,6 +14,9 @@ export default function Supplier() {
                     <PlusCircleIcon className="h-6 w-6 inline-block mr-2" />
                     Add Product
                 </Link>
+                <Link to="/supplier/pendingOrders" className="bg-emerald-500 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded">
+                    Orders
+                </Link>
                 {/* <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Remove Product</button>
                 <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Update Product</button> */}
             </div>

@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./main.css";
 
-import { createBrowserRouter, RouterProvider, Navigate  } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 
 import Root from "./pages/root/root";
 import { rootLoader } from "./pages/root/root-controller";
@@ -41,7 +41,8 @@ import SupplierProductDetail from "./pages/supplier-product-detail/supplier-prod
 import { supplierProductDetailLoader } from "./pages/supplier-product-detail/supplier-product-detail-controller";
 
 import UsersOrders from "./pages/users-orders/users-orders";
-import { usersOrdersLoader } from "./pages/users-orders/users-orders-controller";
+
+import SupplierPendingOrders from "./pages/supplier-pending-orders/supplier-pending-orders";
 
 import ErrorPage from "./pages/error/error-page";
 
@@ -86,7 +87,11 @@ const router = createBrowserRouter([
             {
                 path: "/users/orders",
                 element: <UsersOrders />,
-                loader: usersOrdersLoader,
+            },
+            {
+                path: "/supplier",
+                element: <Supplier />,
+                loader: supplierLoader,
             },
             {
                 path: "/supplier/signup",
@@ -100,14 +105,8 @@ const router = createBrowserRouter([
                 loader: supplierLoginLoader,
             },
             {
-                path: "/supplier",
-                element: <Supplier />,
-                loader: supplierLoader,
-            },
-            {
-                path: "/supplier/:id",
-                element: <SupplierProductDetail />,
-                loader: supplierProductDetailLoader,
+                path: "/supplier/pendingOrders",
+                element: <SupplierPendingOrders />,
             },
             {
                 path: "/supplier/addProduct",
@@ -120,6 +119,11 @@ const router = createBrowserRouter([
                 element: <UpdateProduct />,
                 loader: updateProductLoader,
                 action: updateProductAction,
+            },
+            {
+                path: "/supplier/:id",
+                element: <SupplierProductDetail />,
+                loader: supplierProductDetailLoader,
             },
         ],
     },

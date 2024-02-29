@@ -1,18 +1,25 @@
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { useEffect, useState } from "react";
 
 import { TrashIcon } from "@heroicons/react/24/outline";
 
 /*
-{
+  {
     "ID": 1,
+    "ORDER_ITEM_ID": 1,
+    "USER_ID": 1,
+    "SUPPLIER_ID": 1,
+    "ADDRESS": "Kathmandu",
+    "CREATED_AT": "2024-02-29T17:35:29.000Z",
+    "ID_1": 1,
     "QUANTITY": 2,
     "ORDER_ID": 1,
     "PRODUCT_ID": 1,
     "STATUS": "PENDING",
-    "ID_1": 1,
-    "SUPPLIER_ID": 1,
+    "LAST_UPDATED_ON": "2024-02-29T17:35:29.000Z",
+    "ID_2": 1,
+    "SUPPLIER_ID_1": 1,
     "CATEGORY_ID": 1,
     "NAME": "Bulb",
     "PRICE": 219,
@@ -21,34 +28,18 @@ import { TrashIcon } from "@heroicons/react/24/outline";
     "DISCOUNT": 0,
     "RATING_COUNT": 0,
     "TOTAL_RATING": 0,
-    "CREATED_ON": "2024-02-29T10:30:10.000Z",
-    "LAST_UPDATED_ON": null
+    "CREATED_ON": "2024-02-29T17:35:28.000Z",
+    "LAST_UPDATED_ON_1": null
   },
-*/
+  */
 
-export default function UsersOrders() {
-    /*
-    orders = [
-        {
-            orderId : ...,
-            createdOn : ...,
-            orderItems : [
-                {
-                    ...
-                },
-                ...
-            ]
-        },
-        ...
-    ]
-    */
-
-    const [orders, setOrders] = useState([]);
+export default function SupplierPendingOrders() {
+    const [pendingOrders, setPendingOrders] = useState([]);
 
     const navigate = useNavigate();
 
     async function fetchOrders() {
-        const response = await fetch("http://localhost:3000/users/orders/", { credentials: "include" });
+        const response = await fetch("http://localhost:3000/supplier/orders/", { credentials: "include" });
         const data = await response.json();
 
         if (response.status === 401) {
@@ -56,26 +47,10 @@ export default function UsersOrders() {
         } else if (response.status === 403) {
             return navigate("/users/login?errorMessage=" + encodeURIComponent(data.errorMessage));
         } else if (response.status !== 200) {
-            return navigate("/");
+            return navigate("/"); 
         }
 
-        let currentOrderId = -1;
-        let structuredOrder = [];
-
-        for (let i = 0; i < data.length; i++) {
-            if (currentOrderId !== data[i].ORDER_ID) {
-                currentOrderId = data[i].ORDER_ID;
-                structuredOrder.push({
-                    orderId: "#" + data[i].ID + data[i].ID_1 + data[i].ORDER_ID,
-                    createdOn: data[i].CREATED_ON,
-                    orderItems: [],
-                });
-            }
-
-            structuredOrder[structuredOrder.length - 1].orderItems.push(data[i]);
-        }
-
-        setOrders(structuredOrder);
+        setPendingOrders(data);
     }
 
     useEffect(() => {
@@ -84,37 +59,24 @@ export default function UsersOrders() {
 
     return (
         <>
-            {orders.length <= 0 && (
+            {pendingOrders.length <= 0 && (
                 <div className="font-ember-regular">
                     <div className="flex flex-col gap-4 items-center min-h-52">
-                        <div className="font-ember-light text-center text-3xl font-bold text-gray-600 opacity-35">No orders found</div>
-                        <Link to="/catalog" className="text-daraz-orange text-2xl font-ember-bold hover:underline">
-                            Start shopping
-                        </Link>
+                        <div className="font-ember-light text-center text-3xl font-bold text-gray-600 opacity-35">No pending order found</div>
                     </div>
                 </div>
             )}
 
             <div className="flex flex-col gap-4 mb-8 w-3/4 mx-auto">
-                {orders.map((order) => (
-                    <div key={order.orderId} className="flex flex-col gap-1">
+                {pendingOrders.map((order) => (
+                    <div key={order.ORDER_ITEM_ID} className="flex flex-col gap-1">
                         <div className="flex justify-between items-center">
-                            <div className="text-xl font-ember-bold text-gray-600 ml-3">Order {order.orderId}</div>
-                            <div className="text-lg font-ember-regular text-gray-600 mr-3">Placed on {new Date(order.createdOn).toLocaleDateString()}</div>
+                            {/* <div className="text-xl font-ember-bold text-gray-600 ml-3">Order {order.orderId}</div> */}
+                            <div className="text-lg font-ember-regular text-gray-600 mr-3">Placed on {new Date(order.LAST_UPDATED_ON).toLocaleDateString()}</div>
                         </div>
 
                         <div className="flex flex-col gap-y-2">
-                            {order.orderItems.map((orderItem) => (
-                                <OrderItem key={orderItem.ID} orderItem={orderItem} refreshOrdersList={fetchOrders} />
-                                // <div key={orderItem.ID} className="flex gap-4 items-center">
-                                //     <img src={orderItem.IMAGE_URL} alt={orderItem.NAME} className="w-20 h-20 object-cover rounded-lg" />
-                                //     <div className="flex flex-col gap-2">
-                                //         <div className="text-xl font-ember-bold text-gray-600">{orderItem.NAME}</div>
-                                //         <div className="text-lg font-ember-regular text-gray-600">Quantity: {orderItem.QUANTITY}</div>
-                                //         <div className="text-lg font-ember-regular text-gray-600">Price: ₹{orderItem.PRICE}</div>
-                                //     </div>
-                                // </div>
-                            ))}
+                            <OrderItem orderItem={order} refreshOrdersList={fetchOrders} />
                         </div>
                     </div>
                 ))}
@@ -184,21 +146,13 @@ function OrderItem({ orderItem, refreshOrdersList }) {
                 </div>
 
                 <div className="flex flex-col mt-2 gap-y-2 items-center justify-center mx-4 min-w-24">
-                    {orderItem.STATUS === "PENDING" && <div className="text-xs font-[amazon-ember-lt] text-black bg-blue-600 bg-opacity-30 py-1 px-2 rounded-lg items-center">Pending...</div>}
-                    {orderItem.STATUS === "CANCELED" && (
-                        <>
-                            <div className="flex flex-col bg-red-600 bg-opacity-30 py-1 px-2 rounded-lg items-center">
-                                <div className="text-xs font-[amazon-ember-lt]">Canceled</div>
-                                <div className="text-xs font-[amazon-ember-lt]">{new Date(orderItem.LAST_UPDATED_ON).toLocaleDateString()}</div>
-                            </div>
-                            {/* <div className="text-xs font-[amazon-ember-lt] text-black bg-red-600 bg-opacity-30 py-1 px-2 rounded-lg items-center">Canceled</div>
-                            <div className="text-xs font-[amazon-ember-lt] items-center">Canceled on</div>
-                            <div className="text-xs font-[amazon-ember-lt] items-center">{new Date(orderItem.LAST_UPDATED_ON).toLocaleDateString()}</div> */}
-                        </>
-                    )}
-
+                    <button 
+                        name="ship"
+                        className="flex flex-row bg-daraz-orange text-white text-xs font-[amazon-ember-rg] rounded-md py-1 px-2 hover:bg-[#f85606] hover:bg-opacity-15 hover:underline"
+                    >
+                        Ship
+                    </button>
                     <div className="text-lg font-bold font-[amazon-ember-rg] text-daraz-orange mx-auto mb-2">৳ {Math.ceil(orderItem.PRICE * (1 - orderItem.DISCOUNT) * orderItem.QUANTITY)}</div>
-                    {/* <div className="text-xs font-[amazon-ember-lt] mx-auto mb-3 line-through text-zinc-500">৳ {Math.ceil(orderItem.PRICE * orderItem.QUANTITY)}</div> */}
                 </div>
             </div>
         </>

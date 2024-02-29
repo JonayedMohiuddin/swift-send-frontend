@@ -34,12 +34,38 @@ export default function ProductDetail() {
         if (response.status === 401) {
             window.location.href = "/users/login?errorMessage=" + encodeURIComponent("Please login to add to cart.");
         } else if (response.status === 403) {
-            alert("Sign in using user account to access this page.");
+            alert("Sign in using user account to add to cart.");
             window.location.href = "/users/login?errorMessage=" + encodeURIComponent("Please login using user account to add to cart.");
         } else if (response.status !== 200) {
             alert("Error in adding to cart. Please try again.");
         } else {
             alert("Added to cart successfully.");
+        }
+
+        setQuantity(1);
+    }
+
+    async function handleBuyNow() {
+        const response = await fetch("http://localhost:3000/users/orders/add", {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ productId: product.ID, quantity: quantity }),
+        });
+
+        const data = await response.json();
+
+        if (response.status === 401) {
+            window.location.href = "/users/login?errorMessage=" + encodeURIComponent("Please login to add to cart.");
+        } else if (response.status === 403) {
+            alert("Sign in using user account to buy products.");
+            window.location.href = "/users/login?errorMessage=" + encodeURIComponent("Please login using user account to add to cart.");
+        } else if (response.status !== 200) {
+            alert("Error in adding to orders. Please try again.");
+        } else {
+            alert("Added to orders successfully.");
         }
 
         setQuantity(1);
@@ -75,13 +101,13 @@ export default function ProductDetail() {
                     <div className="product-detail__split"></div>
                     <div className="flex flex-row gap-4 items-center mb-4">
                         <div className="product-detail__price font-ember-bold">&#x9F3; {(product.PRICE - product.PRICE * product.DISCOUNT).toFixed(2)}</div>
-                        <div className="product-detail__discount-price">&#x9F3; {(product.PRICE).toFixed(2)}</div>
+                        <div className="product-detail__discount-price">&#x9F3; {product.PRICE.toFixed(2)}</div>
                     </div>
 
                     <QuantityManager quantity={quantity} setQuantity={setQuantity} />
 
                     <div className="product-detail__button-grp">
-                        <button className="product-detail__buy-now-btn">Buy Now</button>
+                        <button className="product-detail__buy-now-btn" onClick={handleBuyNow}>Buy Now</button>
                         <button className="product-detail__add-to-cart-btn " onClick={handleAddToCart}>
                             Add to Cart
                         </button>
