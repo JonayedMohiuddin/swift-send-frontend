@@ -3,7 +3,7 @@ import { redirect } from "react-router-dom";
 export async function cartLoader({ request }) {
     const response = await fetch("http://localhost:3000/cart/", { credentials: "include" });
     const data = await response.json();
-
+ 
     if (response.status === 401) {
         return redirect("/users/login?errorMessage=" + encodeURIComponent(data.errorMessage));
     } else if (response.status === 403) {

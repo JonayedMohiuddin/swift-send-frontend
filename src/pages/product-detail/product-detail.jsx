@@ -10,15 +10,12 @@ import { StarIcon as SolidStarIcon } from "@heroicons/react/24/solid";
 export default function ProductDetail() {
     const { product, reviews, hasBought, hasReviewed } = useLoaderData();
     const [quantity, setQuantity] = useState(1);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     console.log(product);
     console.log(reviews);
 
-    let rating = 0;
-    if (product.RATING_COUNT > 0) {
-        rating = product.TOTAL_RATING / product.RATING_COUNT;
-    }
-
+    let rating = parseFloat(product.RATING);
     let ratingBarWidth = (rating / 5) * 100;
 
     async function handleAddToCart() {
@@ -98,7 +95,7 @@ export default function ProductDetail() {
                             ({product.RATING_COUNT} {product.RATING_COUNT > 1 ? "ratings" : "rating"})
                         </div>
                         <div className="w-[2px] h-4 bg-black ml-2 mr-2"></div>
-                        <div className="text-xs">{123} Sold</div>
+                        <div className="text-xs">{product.TOTAL_SOLD} Sold</div>
                     </div>
                     <div className="product-detail__split"></div>
                     <div className="flex flex-row gap-4 items-center mb-4">
@@ -148,13 +145,307 @@ export default function ProductDetail() {
 
                 {/* <Ratings /> */}
 
-                <Reviews reviews={reviews} />
+                <Reviews reviews={reviews} productId={product.ID} />
 
-                {hasBought && !hasReviewed && <AddReviews />}
+                {isModalOpen && <AddEditReviews closeModal={() => setIsModalOpen(false)} />}
+
+                {hasBought && !hasReviewed && (
+                    <>
+                        <button
+                            onClick={() => setIsModalOpen(true)}
+                            className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        >
+                            Add Review
+                        </button>
+                    </>
+                )}
             </div>
         </div>
     );
 }
+
+// Reviews Component
+function Reviews({ reviews, productId }) {
+    async function handleReviewEdit() {
+        console.log("Edit review: ");
+    }
+
+    async function handleReviewDelete() {
+        let response = await fetch("http://localhost:3000/users/review/delete", {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ productId }),
+        });
+
+        window.location.reload();
+    }
+
+    return (
+        <div className="col-span-3 flex flex-col gap-2 mt-5 ml-5 p-5 mr-10 bg-white">
+            <div className="font-semibold text-lg mb-4">Customer Reviews</div>
+
+            {reviews.length === 0 && <div className="font-light text-sm">No reviews yet. Be the first to write a review!</div>}
+
+            {reviews.map((review) => (
+                <div key={review.USER_ID} className="border p-4 py-3 rounded-md shadow-md">
+                    <div className="flex items-center gap-x-4 mb-2">
+                        <p className="flex flex-row items-center text-gray-500">
+                            {Array.from({ length: review.RATING }, (_, i) => (
+                                <SolidStarIcon key={i} className="w-3 h-3 text-yellow-300" />
+                            ))}
+                            {Array.from({ length: 5 - review.RATING }, (_, i) => (
+                                <OutlineStarIcon key={5 + i} className="w-3 h-3 text-yellow-300" />
+                            ))}
+                        </p>
+                        <p className="font-semibold text-xs text-blue-600 mr-auto">{review.NAME}</p>
+                        {localStorage.getItem("userId") == review.USER_ID && localStorage.getItem("userType") === "users" && (
+                            <div className="flex items-center gap-2">
+                                <button className="text-xs text-blue-600 hover:underline" onClick={() => handleReviewEdit()}>
+                                    Edit
+                                </button>
+                                <button className="text-xs text-blue-600 hover:underline" onClick={() => handleReviewDelete()}>
+                                    Delete
+                                </button>
+                            </div>
+                        )}
+                        <p className="text-gray-500 text-xs">{new Date(review.LAST_UPDATED_ON).toLocaleString()}</p>
+                    </div>
+                    <p className="text-sm">{review.REVIEW}</p>
+                </div>
+            ))}
+        </div>
+    );
+}
+
+function AddEditReviews({ title = "Add or Edit Review", productId = 1, rating = 0, review = "", closeModal }) {
+    async function handleReviewSubmit(event) {
+        event.preventDefault();
+
+        let review = document.getElementById("description").value;
+        let rating = document.getElementById("rating").value;
+
+        rating = parseInt(rating);
+
+        if (!review || !rating) {
+            alert("Please enter both review and rating.");
+            return;
+        }
+
+        if (rating < 1 || rating > 5) {
+            alert("Rating should be between 1 and 5.");
+            return;
+        }
+
+        let response = await fetch("http://localhost:3000/users/review/add", {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ productId: 1, rating, review }),
+        });
+
+        if (response.status === 401) {
+            window.location.href = "/users/login?errorMessage=" + encodeURIComponent("Please login to add a review.");
+        } else if (response.status === 403) {
+            alert("Sign in using user account to add reviews.");
+            window.location.href = "/users/login?errorMessage=" + encodeURIComponent("Please login using user account to add a review.");
+        } else if (response.status !== 200) {
+            alert("Error in adding review. Please try again.");
+        } else {
+            window.location.reload();
+        }
+    }
+
+    return (
+        <>
+            {/*
+            <button
+                onClick={openModal}
+                className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                type="button"
+            >
+                Toggle modal
+            </button>
+            {isModalOpen && ( */}
+            <div id="crud-modal" tabIndex={-1} aria-hidden="true" className="fixed top-5 right-0 left-0 z-50 flex justify-center items-center w-full h-full">
+                <div className="relative p-4 w-full max-w-md max-h-full">
+                    {/* Modal content */}
+                    <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                        {/* Modal header */}
+                        <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h3>
+                            <button
+                                type="button"
+                                onClick={closeModal}
+                                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                data-modal-toggle="crud-modal"
+                            >
+                                <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                </svg>
+                                <span className="sr-only">Close modal</span>
+                            </button>
+                        </div>
+                        {/* Modal body */}
+                        <form className="p-4 md:p-5 flex flex-col">
+                            <div className="grid gap-4 mb-4 grid-cols-2">
+                                <div className="col-span-2">
+                                    <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                        Rating
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        id="name"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        placeholder="Type product name"
+                                        required=""
+                                        defaultValue={rating}
+                                    />
+                                </div>
+                                {/* <div className="col-span-2 sm:col-span-1">
+                                        <label htmlFor="price" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                            Price
+                                        </label>
+                                        <input
+                                            type="number"
+                                            name="price"
+                                            id="price"
+                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                            placeholder="$2999"
+                                            required=""
+                                        />
+                                    </div>
+                                    <div className="col-span-2 sm:col-span-1">
+                                        <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                            Category
+                                        </label>
+                                        <select
+                                            id="category"
+                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        >
+                                            <option selected="">Select category</option>
+                                            <option value="TV">TV/Monitors</option>
+                                            <option value="PC">PC</option>
+                                            <option value="GA">Gaming/Console</option>
+                                            <option value="PH">Phones</option>
+                                        </select>
+                                    </div> */}
+                                <div className="col-span-2">
+                                    <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                        Review
+                                    </label>
+                                    <textarea
+                                        id="description"
+                                        rows={4}
+                                        className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        placeholder="Write product description here"
+                                        defaultValue={review}
+                                    />
+                                </div>
+                            </div>
+                            <button
+                                type="submit"
+                                className="ml-auto text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                onClick={handleReviewSubmit}
+                            >
+                                Save
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {/* )} */}
+        </>
+    );
+}
+
+// function AddReviews() {
+//     async function handleSubmitReview(event) {
+//         event.preventDefault();
+
+//         let review = document.getElementById("review").value;
+//         let rating = document.getElementById("rating").value;
+
+//         rating = parseInt(rating);
+
+//         if (!review || !rating) {
+//             alert("Please enter both review and rating.");
+//             return;
+//         }
+
+//         if (rating < 1 || rating > 5) {
+//             alert("Rating should be between 1 and 5.");
+//             return;
+//         }
+
+//         let response = await fetch("http://localhost:3000/users/review/add", {
+//             method: "POST",
+//             credentials: "include",
+//             headers: {
+//                 "Content-Type": "application/json",
+//             },
+//             body: JSON.stringify({ productId: 1, rating, review }),
+//         });
+
+//         if (response.status === 401) {
+//             window.location.href = "/users/login?errorMessage=" + encodeURIComponent("Please login to add a review.");
+//         } else if (response.status === 403) {
+//             alert("Sign in using user account to add reviews.");
+//             window.location.href = "/users/login?errorMessage=" + encodeURIComponent("Please login using user account to add a review.");
+//         } else if (response.status !== 200) {
+//             alert("Error in adding review. Please try again.");
+//         } else {
+//             window.location.reload();
+//         }
+//     }
+
+//     return (
+//         <div className="col-span-3 flex flex-col gap-2 mt-5 ml-5 p-5 mr-10 bg-white border py-3 rounded-md shadow-md mb-10">
+//             <form>
+//                 <div className="mb-4">
+//                     <label htmlFor="review" className="block text-sm font-medium text-gray-700">
+//                         Your Review
+//                     </label>
+//                     <textarea
+//                         id="review"
+//                         name="review"
+//                         rows="4"
+//                         className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+//                         placeholder="Share your thoughts..."
+//                     ></textarea>
+//                 </div>
+//                 <div className="mb-4">
+//                     <label htmlFor="rating" className="block text-sm font-medium text-gray-700">
+//                         Rating (1-5)
+//                     </label>
+//                     <input
+//                         type="number"
+//                         id="rating"
+//                         name="rating"
+//                         min="1"
+//                         max="5"
+//                         className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+//                         placeholder="Rate from 1 to 5"
+//                     />
+//                 </div>
+//                 <div className="flex justify-end">
+//                     <button
+//                         type="submit"
+//                         className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+//                         onClick={handleSubmitReview}
+//                     >
+//                         Submit Review
+//                     </button>
+//                 </div>
+//             </form>
+//         </div>
+//     );
+// }
 
 function Ratings() {
     return (
@@ -232,143 +523,5 @@ function Ratings() {
                 </div>
             </div>
         </>
-    );
-}
-// Reviews Component
-function Reviews({ reviews }) {
-    async function handleReviewEdit(reviewId) {
-        console.log("Edit review: ", reviewId);
-    }
-
-    async function handleReviewDelete(reviewId) {
-        let response = await fetch("http://localhost:3000/users/review/delete", {
-            method: "POST",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ reviewId }),
-        });
-
-        window.location.reload();
-    }
-
-    return (
-        <div className="col-span-3 flex flex-col gap-2 mt-5 ml-5 p-5 mr-10 bg-white">
-            <div className="font-semibold text-lg mb-4">Customer Reviews</div>
-
-            {reviews.length === 0 && <div className="font-light text-sm">No reviews yet. Be the first to write a review!</div>}
-
-            {reviews.map((review) => (
-                <div key={review.ID} className="border p-4 py-3 rounded-md shadow-md">
-                    <div className="flex items-center gap-x-4 mb-2">
-                        <p className="flex flex-row items-center text-gray-500">
-                            {Array.from({ length: review.RATING }, (_, i) => (
-                                <SolidStarIcon key={i} className="w-3 h-3 text-yellow-300" />
-                            ))}
-                            {Array.from({ length: 5 - review.RATING }, (_, i) => (
-                                <OutlineStarIcon key={5 + i} className="w-3 h-3 text-yellow-300" />
-                            ))}
-                        </p>
-                        <p className="font-semibold text-xs text-blue-600 mr-auto">{review.NAME}</p>
-                        {localStorage.getItem("userId") == review.USER_ID && (
-                            <div className="flex items-center gap-2">
-                                <button className="text-xs text-blue-600 hover:underline" onClick={() => handleReviewEdit(review.ID)}>
-                                    Edit
-                                </button>
-                                <button className="text-xs text-blue-600 hover:underline" onClick={() => handleReviewDelete(review.ID)}>
-                                    Delete
-                                </button>
-                            </div>
-                        )}
-                        <p className="text-gray-500 text-xs">{new Date(review.LAST_UPDATED_ON).toLocaleString()}</p>
-                    </div>
-                    <p className="text-sm">{review.REVIEW}</p>
-                </div>
-            ))}
-        </div>
-    );
-}
-
-function AddReviews() {
-    async function handleSubmitReview(event) {
-        event.preventDefault();
-
-        let review = document.getElementById("review").value;
-        let rating = document.getElementById("rating").value;
-
-        rating = parseInt(rating);
-
-        if (!review || !rating) {
-            alert("Please enter both review and rating.");
-            return;
-        }
-
-        if (rating < 1 || rating > 5) {
-            alert("Rating should be between 1 and 5.");
-            return;
-        }
-
-        let response = await fetch("http://localhost:3000/users/review/add", {
-            method: "POST",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ productId: 1, rating, review }),
-        });
-
-        if (response.status === 401) {
-            window.location.href = "/users/login?errorMessage=" + encodeURIComponent("Please login to add a review.");
-        } else if (response.status === 403) {
-            alert("Sign in using user account to add reviews.");
-            window.location.href = "/users/login?errorMessage=" + encodeURIComponent("Please login using user account to add a review.");
-        } else if (response.status !== 200) {
-            alert("Error in adding review. Please try again.");
-        } else {
-            window.location.reload();
-        }
-    }
-
-    return (
-        <div className="col-span-3 flex flex-col gap-2 mt-5 ml-5 p-5 mr-10 bg-white border py-3 rounded-md shadow-md mb-10">
-            <form>
-                <div className="mb-4">
-                    <label htmlFor="review" className="block text-sm font-medium text-gray-700">
-                        Your Review
-                    </label>
-                    <textarea
-                        id="review"
-                        name="review"
-                        rows="4"
-                        className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                        placeholder="Share your thoughts..."
-                    ></textarea>
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="rating" className="block text-sm font-medium text-gray-700">
-                        Rating (1-5)
-                    </label>
-                    <input
-                        type="number"
-                        id="rating"
-                        name="rating"
-                        min="1"
-                        max="5"
-                        className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                        placeholder="Rate from 1 to 5"
-                    />
-                </div>
-                <div className="flex justify-end">
-                    <button
-                        type="submit"
-                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                        onClick={handleSubmitReview}
-                    >
-                        Submit Review
-                    </button>
-                </div>
-            </form>
-        </div>
     );
 }

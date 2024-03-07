@@ -45,8 +45,8 @@ export default function Supplier() {
                         productPrice={product.PRODUCT_PRICE}
                         productImageUrl={product.PRODUCT_IMAGE_URL}
                         productDiscount={product.PRODUCT_DISCOUNT}
-                        productRatingCount={product.PRODUCT_RATING_COUNT}
-                        productTotalRating={product.PRODUCT_TOTAL_RATING}
+                        productRatingCount={product.RATING_COUNT}
+                        productTotalRating={product.RATING}
                         redirectionUrl={`/supplier/${product.PRODUCT_ID}`}
                     />
                 ))}

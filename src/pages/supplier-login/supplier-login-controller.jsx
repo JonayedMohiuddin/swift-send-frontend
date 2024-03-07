@@ -30,6 +30,10 @@ export async function supplierLoginAction({ request, params }) {
 
     if (response.ok) {
         console.log("Login successful.");
+
+        localStorage.setItem("userType", "supplier");
+        localStorage.setItem("userId", data.userId);
+
         return redirect("/supplier");
     } else {
         console.log("Error in login. Please try again.");

@@ -21,7 +21,7 @@ export default function Catalog() {
                             productImageUrl={product.IMAGE_URL}
                             productDiscount={product.DISCOUNT}
                             productRatingCount={product.RATING_COUNT}
-                            productTotalRating={product.TOTAL_RATING}
+                            productTotalRating={product.RATING}
                             redirectionUrl={`/catalog/${product.ID}`}
                         />
                     ))}
