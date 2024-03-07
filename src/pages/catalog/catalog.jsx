@@ -10,25 +10,27 @@ export default function Catalog() {
     return (
         <>
             <div className="product-card-container">
-                {products.map((product) => (
-                    <ProductCard
-                        key={product.ID}
-                        product={product}
-                        productName={product.NAME}
-                        productPrice={product.PRICE}
-                        productImageUrl={product.IMAGE_URL}
-                        productDiscount={product.DISCOUNT}
-                        productRatingCount={product.RATING_COUNT}
-                        productTotalRating={product.TOTAL_RATING}
-                        redirectionUrl={`/catalog/${product.ID}`}
-                    />
-                ))}
+                {products
+                    .filter((product) => product.CATEGORY_ID !== null)
+                    .map((product) => (
+                        <ProductCard
+                            key={product.ID}
+                            product={product}
+                            productName={product.NAME}
+                            productPrice={product.PRICE}
+                            productImageUrl={product.IMAGE_URL}
+                            productDiscount={product.DISCOUNT}
+                            productRatingCount={product.RATING_COUNT}
+                            productTotalRating={product.TOTAL_RATING}
+                            redirectionUrl={`/catalog/${product.ID}`}
+                        />
+                    ))}
             </div>
 
             <Form action="/catalog" method="get" className="mt-5 mb-7">
-                <input className="hidden" name="search" defaultValue={search || ''} ></input>
-                <input className="hidden" name="category" defaultValue={category || ''} ></input>
-                <Pagination currentPage={page} lastPage={totalPages} totalProducts={totalProducts}/>
+                <input className="hidden" name="search" defaultValue={search || ""}></input>
+                <input className="hidden" name="category" defaultValue={category || ""}></input>
+                <Pagination currentPage={page} lastPage={totalPages} totalProducts={totalProducts} />
             </Form>
         </>
     );

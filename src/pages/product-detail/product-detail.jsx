@@ -1,16 +1,18 @@
-import { useLoaderData } from "react-router-dom";
-import { useState } from "react";
+import { useLoaderData, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 import "./product-detail.css";
 import QuantityManager from "../../components/QuantityManager/quantity-manager";
 
-import { HeartIcon, ShareIcon } from "@heroicons/react/24/outline";
+import { HeartIcon, ShareIcon, StarIcon as OutlineStarIcon } from "@heroicons/react/24/outline";
+import { StarIcon as SolidStarIcon } from "@heroicons/react/24/solid";
 
 export default function ProductDetail() {
-    const { product } = useLoaderData();
+    const { product, reviews, hasBought, hasReviewed } = useLoaderData();
     const [quantity, setQuantity] = useState(1);
 
     console.log(product);
+    console.log(reviews);
 
     let rating = 0;
     if (product.RATING_COUNT > 0) {
@@ -107,7 +109,9 @@ export default function ProductDetail() {
                     <QuantityManager quantity={quantity} setQuantity={setQuantity} />
 
                     <div className="product-detail__button-grp">
-                        <button className="product-detail__buy-now-btn" onClick={handleBuyNow}>Buy Now</button>
+                        <button className="product-detail__buy-now-btn" onClick={handleBuyNow}>
+                            Buy Now
+                        </button>
                         <button className="product-detail__add-to-cart-btn " onClick={handleAddToCart}>
                             Add to Cart
                         </button>
@@ -141,7 +145,230 @@ export default function ProductDetail() {
                     <div className="font-ember-bold text-lg">About this item</div>
                     <div className="font-ember-light text-sm">{product.DESCRIPTION}</div>
                 </div>
+
+                {/* <Ratings /> */}
+
+                <Reviews reviews={reviews} />
+
+                {hasBought && !hasReviewed && <AddReviews />}
             </div>
+        </div>
+    );
+}
+
+function Ratings() {
+    return (
+        <>
+            <div className="flex flex-row">
+                <div className="flex flex-col">
+                    <div className="flex items-center mb-2">
+                        <svg className="w-4 h-4 text-yellow-300 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                        </svg>
+                        <svg className="w-4 h-4 text-yellow-300 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                        </svg>
+                        <svg className="w-4 h-4 text-yellow-300 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                        </svg>
+                        <svg className="w-4 h-4 text-yellow-300 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                        </svg>
+                        <svg className="w-4 h-4 text-gray-300 me-1 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                        </svg>
+                        <p className="ms-1 text-sm font-medium text-gray-500">4.95</p>
+                        <p className="ms-1 text-sm font-medium text-gray-500">out of</p>
+                        <p className="ms-1 text-sm font-medium text-gray-500">5</p>
+                    </div>
+                    <p className="text-sm font-medium text-gray-500">1,745 global ratings</p>
+                </div>
+                <div className="flex flex-col min-w-[400px]">
+                    <div className="flex items-center mt-4">
+                        <a href="#" className="text-sm font-medium text-blue-600 hover:underline">
+                            5 star
+                        </a>
+                        <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded">
+                            <div className="h-5 bg-yellow-300 rounded" style={{ width: "70%" }} />
+                        </div>
+                        <span className="text-sm font-medium text-gray-500">70%</span>
+                    </div>
+                    <div className="flex items-center mt-4">
+                        <a href="#" className="text-sm font-medium text-blue-600 hover:underline">
+                            4 star
+                        </a>
+                        <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded">
+                            <div className="h-5 bg-yellow-300 rounded" style={{ width: "17%" }} />
+                        </div>
+                        <span className="text-sm font-medium text-gray-500">17%</span>
+                    </div>
+                    <div className="flex items-center mt-4">
+                        <a href="#" className="text-sm font-medium text-blue-600 hover:underline">
+                            3 star
+                        </a>
+                        <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded">
+                            <div className="h-5 bg-yellow-300 rounded" style={{ width: "8%" }} />
+                        </div>
+                        <span className="text-sm font-medium text-gray-500">8%</span>
+                    </div>
+                    <div className="flex items-center mt-4">
+                        <a href="#" className="text-sm font-medium text-blue-600 hover:underline">
+                            2 star
+                        </a>
+                        <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded">
+                            <div className="h-5 bg-yellow-300 rounded" style={{ width: "4%" }} />
+                        </div>
+                        <span className="text-sm font-medium text-gray-500">4%</span>
+                    </div>
+                    <div className="flex items-center mt-4">
+                        <a href="#" className="text-sm font-medium text-blue-600 hover:underline">
+                            1 star
+                        </a>
+                        <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded">
+                            <div className="h-5 bg-yellow-300 rounded" style={{ width: "1%" }} />
+                        </div>
+                        <span className="text-sm font-medium text-gray-500">1%</span>
+                    </div>
+                </div>
+            </div>
+        </>
+    );
+}
+// Reviews Component
+function Reviews({ reviews }) {
+    async function handleReviewEdit(reviewId) {
+        console.log("Edit review: ", reviewId);
+    }
+
+    async function handleReviewDelete(reviewId) {
+        let response = await fetch("http://localhost:3000/users/review/delete", {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ reviewId }),
+        });
+
+        window.location.reload();
+    }
+
+    return (
+        <div className="col-span-3 flex flex-col gap-2 mt-5 ml-5 p-5 mr-10 bg-white">
+            <div className="font-semibold text-lg mb-4">Customer Reviews</div>
+
+            {reviews.length === 0 && <div className="font-light text-sm">No reviews yet. Be the first to write a review!</div>}
+
+            {reviews.map((review) => (
+                <div key={review.ID} className="border p-4 py-3 rounded-md shadow-md">
+                    <div className="flex items-center gap-x-4 mb-2">
+                        <p className="flex flex-row items-center text-gray-500">
+                            {Array.from({ length: review.RATING }, (_, i) => (
+                                <SolidStarIcon key={i} className="w-3 h-3 text-yellow-300" />
+                            ))}
+                            {Array.from({ length: 5 - review.RATING }, (_, i) => (
+                                <OutlineStarIcon key={5 + i} className="w-3 h-3 text-yellow-300" />
+                            ))}
+                        </p>
+                        <p className="font-semibold text-xs text-blue-600 mr-auto">{review.NAME}</p>
+                        {localStorage.getItem("userId") == review.USER_ID && (
+                            <div className="flex items-center gap-2">
+                                <button className="text-xs text-blue-600 hover:underline" onClick={() => handleReviewEdit(review.ID)}>
+                                    Edit
+                                </button>
+                                <button className="text-xs text-blue-600 hover:underline" onClick={() => handleReviewDelete(review.ID)}>
+                                    Delete
+                                </button>
+                            </div>
+                        )}
+                        <p className="text-gray-500 text-xs">{new Date(review.LAST_UPDATED_ON).toLocaleString()}</p>
+                    </div>
+                    <p className="text-sm">{review.REVIEW}</p>
+                </div>
+            ))}
+        </div>
+    );
+}
+
+function AddReviews() {
+    async function handleSubmitReview(event) {
+        event.preventDefault();
+
+        let review = document.getElementById("review").value;
+        let rating = document.getElementById("rating").value;
+
+        rating = parseInt(rating);
+
+        if (!review || !rating) {
+            alert("Please enter both review and rating.");
+            return;
+        }
+
+        if (rating < 1 || rating > 5) {
+            alert("Rating should be between 1 and 5.");
+            return;
+        }
+
+        let response = await fetch("http://localhost:3000/users/review/add", {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ productId: 1, rating, review }),
+        });
+
+        if (response.status === 401) {
+            window.location.href = "/users/login?errorMessage=" + encodeURIComponent("Please login to add a review.");
+        } else if (response.status === 403) {
+            alert("Sign in using user account to add reviews.");
+            window.location.href = "/users/login?errorMessage=" + encodeURIComponent("Please login using user account to add a review.");
+        } else if (response.status !== 200) {
+            alert("Error in adding review. Please try again.");
+        } else {
+            window.location.reload();
+        }
+    }
+
+    return (
+        <div className="col-span-3 flex flex-col gap-2 mt-5 ml-5 p-5 mr-10 bg-white border py-3 rounded-md shadow-md mb-10">
+            <form>
+                <div className="mb-4">
+                    <label htmlFor="review" className="block text-sm font-medium text-gray-700">
+                        Your Review
+                    </label>
+                    <textarea
+                        id="review"
+                        name="review"
+                        rows="4"
+                        className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        placeholder="Share your thoughts..."
+                    ></textarea>
+                </div>
+                <div className="mb-4">
+                    <label htmlFor="rating" className="block text-sm font-medium text-gray-700">
+                        Rating (1-5)
+                    </label>
+                    <input
+                        type="number"
+                        id="rating"
+                        name="rating"
+                        min="1"
+                        max="5"
+                        className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        placeholder="Rate from 1 to 5"
+                    />
+                </div>
+                <div className="flex justify-end">
+                    <button
+                        type="submit"
+                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        onClick={handleSubmitReview}
+                    >
+                        Submit Review
+                    </button>
+                </div>
+            </form>
         </div>
     );
 }

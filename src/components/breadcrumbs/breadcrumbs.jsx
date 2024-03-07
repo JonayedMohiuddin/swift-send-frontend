@@ -33,7 +33,7 @@ export default function Breadcrumbs() {
             const response = await fetch(`http://localhost:3000/catalog/product/${productId}`);
             const data = await response.json();
 
-            newItems.push(data.CATEGORY_NAME);
+            newItems.push(data.CATEGORY_NAME || "!! CATEGORY-NOT-SET !!");
             newLinks.push(`/${newItems.slice(1, newItems.length-1).join("/")}?category=${data.CATEGORY_NAME}`);
             
             newItems.push(data.NAME);

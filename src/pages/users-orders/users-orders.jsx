@@ -67,7 +67,7 @@ export default function UsersOrders() {
                 currentOrderId = data[i].ORDER_ID;
                 structuredOrder.push({
                     orderId: "#" + data[i].ID + data[i].ID_1 + data[i].ORDER_ID,
-                    createdOn: data[i].CREATED_ON,
+                    createdOn: data[i].CREATED_AT,
                     orderItems: [],
                 });
             }
@@ -191,11 +191,10 @@ function OrderItem({ orderItem, refreshOrdersList }) {
                                 <div className="text-xs font-[amazon-ember-lt]">Canceled</div>
                                 <div className="text-xs font-[amazon-ember-lt]">{new Date(orderItem.LAST_UPDATED_ON).toLocaleDateString()}</div>
                             </div>
-                            {/* <div className="text-xs font-[amazon-ember-lt] text-black bg-red-600 bg-opacity-30 py-1 px-2 rounded-lg items-center">Canceled</div>
-                            <div className="text-xs font-[amazon-ember-lt] items-center">Canceled on</div>
-                            <div className="text-xs font-[amazon-ember-lt] items-center">{new Date(orderItem.LAST_UPDATED_ON).toLocaleDateString()}</div> */}
                         </>
                     )}
+                    {orderItem.STATUS === "SHIPPED" && <div className="text-xs font-[amazon-ember-lt] text-black bg-yellow-600 bg-opacity-30 py-1 px-2 rounded-lg items-center">Shipped...</div>}
+                    {orderItem.STATUS === "DELIVERED" && <div className="text-xs font-[amazon-ember-lt] text-black bg-green-600 bg-opacity-30 py-1 px-2 rounded-lg items-center">Delivered</div>}
 
                     <div className="text-lg font-bold font-[amazon-ember-rg] text-daraz-orange mx-auto mb-2">৳ {Math.ceil(orderItem.PRICE * (1 - orderItem.DISCOUNT) * orderItem.QUANTITY)}</div>
                     {/* <div className="text-xs font-[amazon-ember-lt] mx-auto mb-3 line-through text-zinc-500">৳ {Math.ceil(orderItem.PRICE * orderItem.QUANTITY)}</div> */}

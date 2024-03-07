@@ -4,7 +4,7 @@ export async function usersSignupAction({ request, params }) {
     const formData = await request.formData();
     const signupInfo = Object.fromEntries(formData);
     signupInfo.userType = "users";
-    signupInfo.name = signupInfo.firstName + " " + signupInfo.lastName;
+    signupInfo.name = signupInfo.firstname + " " + signupInfo.lastname;
     
     console.log(signupInfo);
 

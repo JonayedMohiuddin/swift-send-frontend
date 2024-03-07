@@ -1,6 +1,6 @@
-import { Form, useLoaderData, redirect, useNavigate } from "react-router-dom";
+import { redirect } from "react-router-dom";
 
-export function usersLoginLoader({ request }) {
+export function adminLoginLoader({ request }) {
     const url = new URL(request.url);
     const searchParams = url.searchParams;
     const errorMessage = searchParams.get("errorMessage");
@@ -8,13 +8,12 @@ export function usersLoginLoader({ request }) {
     return { errorMessage };
 }
 
-export async function usersLoginAction({ request, params }) {
+export async function adminLoginAction({ request, params }) {
     const formData = await request.formData();
     const loginInfo = Object.fromEntries(formData);
-    loginInfo.userType = "users";
+    loginInfo.userType = "admin";
+     
     console.log(loginInfo);
-
-    
 
     const response = await fetch("http://localhost:3000/auth/login", {
         method: "POST",
@@ -31,14 +30,7 @@ export async function usersLoginAction({ request, params }) {
 
     if (response.ok) {
         console.log("Login successful.");
-
-        const accessToken = data.accessToken;
-        localStorage.setItem("accessToken", accessToken);
-
-        localStorage.setItem("userType", "users");
-        localStorage.setItem("userId", data.userId);
-
-        return redirect("/catalog");
+        return redirect("/admin");
     } else {
         console.log("Error in login. Please try again.");
 

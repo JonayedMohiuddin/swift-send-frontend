@@ -97,7 +97,7 @@ export default function Navbar() {
                         Logout
                     </button>
 
-                    <Link className="navbar__btn-image" to="/cart">
+                    <Link className="navbar__btn-image" to="/users/cart">
                         <ShoppingCartIcon className="w-7 mt-0.5" />
                     </Link>
                 </div>

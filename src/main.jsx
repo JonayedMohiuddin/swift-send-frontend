@@ -44,6 +44,13 @@ import UsersOrders from "./pages/users-orders/users-orders";
 
 import SupplierPendingOrders from "./pages/supplier-pending-orders/supplier-pending-orders";
 
+import AdminLogin from "./pages/admin-login/admin-login";
+import { adminLoginLoader, adminLoginAction } from "./pages/admin-login/admin-login-controller";
+
+import Admin from "./pages/admin/admin";
+
+import AdminOrders from "./pages/admin-orders/admin-orders";
+
 import ErrorPage from "./pages/error/error-page";
 
 const router = createBrowserRouter([
@@ -68,7 +75,7 @@ const router = createBrowserRouter([
                 loader: productDetailLoader,
             },
             {
-                path: "/cart",
+                path: "/users/cart",
                 element: <Cart />,
                 loader: cartLoader,
                 action: cartAction,
@@ -124,6 +131,20 @@ const router = createBrowserRouter([
                 path: "/supplier/:id",
                 element: <SupplierProductDetail />,
                 loader: supplierProductDetailLoader,
+            },
+            {
+                path: "/admin/login",
+                element: <AdminLogin />,
+                loader: adminLoginLoader,
+                action: adminLoginAction,
+            },
+            {
+                path: "/admin",
+                element: <Admin />,
+            },
+            {
+                path: "/admin/orders",
+                element: <AdminOrders />,
             },
         ],
     },

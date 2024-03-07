@@ -86,6 +86,8 @@ Content-Type: application/json
 }
 */
     async function handleCheckout() {
+        if(cartItems.length === 0) return;
+
         const response = await fetch("http://localhost:3000/users/orders/addFromCart", {
             method: "POST",
             credentials: "include",
@@ -160,8 +162,10 @@ Content-Type: application/json
                             <InputField name="code" autocomplete="off" label="Promo code" placeholder="Enter code" />
                             <button className="text-xs font-ember-light bg-cyan-500 text-white rounded-md py-1 px-2 hover:bg-[#cc4705]">Apply</button>
                         </div>
-                        <button className="text-lg font-ember-regular min-h-9 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md py-1 px-2" onClick={handleCheckout}>
-                            Proceed to checkout
+                        
+                        <button className={`text-lg font-ember-regular min-h-9 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md py-1 px-2 ${cartItems.length === 0 && "cursor-not-allowed bg-gray-400 hover:bg-gray-400"}`} onClick={handleCheckout}>    
+                            {/* Proceed to checkout */}
+                            Place Orders
                         </button>
                     </div>
                 </div>
