@@ -31,8 +31,10 @@ export async function adminLoginAction({ request, params }) {
     if (response.ok) {
         console.log("Login successful.");
 
+        localStorage.setItem("isLoggedIn", true);
         localStorage.setItem("userType", "admin");
         localStorage.setItem("userId", data.userId);
+        localStorage.setItem("userName", data.userName);
 
         return redirect("/admin");
     } else {

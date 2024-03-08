@@ -2,7 +2,7 @@ import { Form, Link, useActionData, useLoaderData } from "react-router-dom";
 
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
-import InputField from "../../components/form-components/InputField";
+import InputField from "../../components/form-components/inputField";
 
 export default function UsersLogin() {
     const { errorMessage } = useLoaderData();

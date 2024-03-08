@@ -42,6 +42,10 @@ import { supplierProductDetailLoader } from "./pages/supplier-product-detail/sup
 
 import UsersOrders from "./pages/users-orders/users-orders";
 
+import UsersProfile from "./pages/users-profile/users-profile";
+
+import UsersWishlist from "./pages/users-wishlist/users-wishlist";
+
 import SupplierPendingOrders from "./pages/supplier-pending-orders/supplier-pending-orders";
 
 import AdminLogin from "./pages/admin-login/admin-login";
@@ -94,6 +98,14 @@ const router = createBrowserRouter([
             {
                 path: "/users/orders",
                 element: <UsersOrders />,
+            },
+            {
+                path: "/users/profile",
+                element: <UsersProfile />,
+            },
+            {
+                path: "/users/wishlist",
+                element: <UsersWishlist />,
             },
             {
                 path: "/supplier",

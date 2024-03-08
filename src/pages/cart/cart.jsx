@@ -4,8 +4,8 @@ import InputField from "../../components/form-components/InputField";
 
 import QuantityManager from "../../components/QuantityManager/quantity-manager";
 
-import { TrashIcon, HeartIcon, ShareIcon, ShoppingCartIcon } from "@heroicons/react/24/outline";
-
+import { TrashIcon, HeartIcon as HeartIconOutline, ShareIcon, ShoppingCartIcon } from "@heroicons/react/24/outline";
+import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
 /*
 "cartItems": [
     {
@@ -86,7 +86,7 @@ Content-Type: application/json
 }
 */
     async function handleCheckout() {
-        if(cartItems.length === 0) return;
+        if (cartItems.length === 0) return;
 
         const response = await fetch("http://localhost:3000/users/orders/addFromCart", {
             method: "POST",
@@ -162,8 +162,13 @@ Content-Type: application/json
                             <InputField name="code" autocomplete="off" label="Promo code" placeholder="Enter code" />
                             <button className="text-xs font-ember-light bg-cyan-500 text-white rounded-md py-1 px-2 hover:bg-[#cc4705]">Apply</button>
                         </div>
-                        
-                        <button className={`text-lg font-ember-regular min-h-9 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md py-1 px-2 ${cartItems.length === 0 && "cursor-not-allowed bg-gray-400 hover:bg-gray-400"}`} onClick={handleCheckout}>    
+
+                        <button
+                            className={`text-lg font-ember-regular min-h-9 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md py-1 px-2 ${
+                                cartItems.length === 0 && "cursor-not-allowed bg-gray-400 hover:bg-gray-400"
+                            }`}
+                            onClick={handleCheckout}
+                        >
                             {/* Proceed to checkout */}
                             Place Orders
                         </button>
@@ -176,6 +181,7 @@ Content-Type: application/json
 
 function CartItem({ cartItem, totalPrice, saving, setTotalPrice, setSavings }) {
     const [quantity, setQuantity] = useState(cartItem.QUANTITY);
+    const [wishListed, setWishListed] = useState(parseInt(cartItem.WISH_LIST_COUNT) > 0);
 
     async function onQuantityChange(newQuantity) {
         console.log("Updating quantity to " + newQuantity);
@@ -217,6 +223,40 @@ function CartItem({ cartItem, totalPrice, saving, setTotalPrice, setSavings }) {
         window.location.reload();
     }
 
+    async function handleAddToWishlist() {
+        if (localStorage.getItem("isLoggedIn") != "true" || localStorage.getItem("userType") != "users") {
+            window.location.href = "/users/login?errorMessage=" + encodeURIComponent("Please login using user account to add to wishlist.");
+            return;
+        }
+
+        let mode = "add"; // add or remove
+        if (wishListed) mode = "remove";
+
+        const response = await fetch(`http://localhost:3000/users/wishlist/${mode}`, {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ productId: cartItem.PRODUCT_ID }),
+        });
+
+        const data = await response.json();
+
+        if (response.status === 401) {
+            window.location.href = "/users/login?errorMessage=" + encodeURIComponent("Please login to add to wishlist.");
+        } else if (response.status === 403) {
+            alert("Sign in using user account to add to wishlist.");
+            window.location.href = "/users/login?errorMessage=" + encodeURIComponent("Please login using user account to add to wishlist.");
+        }
+
+        if (response.status !== 200) {
+            alert("Error in adding to wishlist. Please try again.");
+        }
+
+        setWishListed(!wishListed);
+    }
+
     return (
         <>
             <div className="flex flex-row">
@@ -227,10 +267,17 @@ function CartItem({ cartItem, totalPrice, saving, setTotalPrice, setSavings }) {
                     <div className="flex flex-row gap-x-2 mt-4">
                         <button
                             name="addToWishlist"
-                            className="flex flex-row bg-slate-200 hover:text-daraz-orange text-xs font-[amazon-ember-rg] rounded-md py-1 px-2 hover:bg-[#f85606] hover:bg-opacity-15 hover:underline"
+                            className="flex flex-row bg-slate-200 hover:text-writing-important text-xs font-ember-regular rounded-md py-1 px-2 hover:bg-primary hover:bg-opacity-15 hover:underline"
+                            onClick={handleAddToWishlist}
                         >
-                            <HeartIcon className="w-4 h-4 mr-2" />
-                            Add to wishlist
+                            {wishListed ? (
+                                <HeartIconSolid className="w-4 h-4 text-primary-complementary" />
+                            ) : (
+                                <div className="flex flex-row">
+                                    <HeartIconOutline className="w-4 h-4 mr-2" />
+                                    <p>Add to wishlist</p>
+                                </div>
+                            )}
                         </button>
                         <button
                             name="remove"

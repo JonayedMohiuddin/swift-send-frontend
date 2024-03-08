@@ -1,4 +1,4 @@
-import { Form, useLoaderData, redirect, useNavigate } from "react-router-dom";
+import { redirect } from "react-router-dom";
 
 export function usersLoginLoader({ request }) {
     const url = new URL(request.url);
@@ -13,8 +13,6 @@ export async function usersLoginAction({ request, params }) {
     const loginInfo = Object.fromEntries(formData);
     loginInfo.userType = "users";
     console.log(loginInfo);
-
-    
 
     const response = await fetch("http://localhost:3000/auth/login", {
         method: "POST",
@@ -35,8 +33,10 @@ export async function usersLoginAction({ request, params }) {
         const accessToken = data.accessToken;
         localStorage.setItem("accessToken", accessToken);
 
+        localStorage.setItem("isLoggedIn", true);
         localStorage.setItem("userType", "users");
         localStorage.setItem("userId", data.userId);
+        localStorage.setItem("userName", data.userName);
 
         return redirect("/catalog");
     } else {

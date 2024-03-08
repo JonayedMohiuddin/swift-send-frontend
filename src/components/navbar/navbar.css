@@ -27,7 +27,7 @@
     box-sizing: border-box;
     /* background-color: #6c3784 ; */
     /* background-color: #2d6074; */
-    background-color: #f85606;
+    /* background-color: #f85606; */
     height: 80px;
     position: fixed;
     top: 0;
@@ -72,7 +72,7 @@
     width: 100%;
     max-width: 600px;
     height: 40px;
-    background-color: #e7e7e7;
+    /* background-color: #e7e7e7; */
     border-radius: 0;
     border-width: 0px;
     padding: 0 13px;
@@ -92,7 +92,7 @@
     border-radius: 0 8px 8px 0;
     /* background-color: #e9c46a; */
     /* background-color: #ffb433; */
-    background-color: #e3a27c;
+    /* background-color: #e3a27c; */
     background-image: url("/images/icons-search.png");
     background-repeat: no-repeat;
     background-position: center;
@@ -100,13 +100,13 @@
 }
 
 .navbar__search-btn:hover {
-    background-color: #ca8961;
+    /* background-color: #ca8961; */
     transition: all 0.3s ease 0s;
 }
 
-.navbar__category-container {
+/* .navbar__category-container {
     background-color: red;
-}
+} */
 
 .navbar__category {
     background-image: none;
@@ -115,7 +115,7 @@
     font-size: 0.8em;
     height: 40px;
     border-radius: 8px 0 0 8px;
-    background-color: #edf0f1;
+    /* background-color: #edf0f1; */
     border: none;
     border-right: #60a7a5 1px solid;
     transition: all 0.3s ease 0s;
@@ -133,7 +133,7 @@
 }
 
 .navbar__category:hover {
-    background-color: #edf0f1;
+    /* background-color: #edf0f1; */
     opacity: 0.8;
     transition: all 0.3s ease 0s;
 }
@@ -147,7 +147,7 @@
 }
 
 .navbar__btn:hover {
-    background-color: #264754;
+    /* background-color: #264754; */
     transition: all 0.3s ease 0s;
 }
 
@@ -168,7 +168,7 @@
 .navbar__link:hover {
     /* background-color: #264754; */
     /* background-color: #553261; */
-    background-color: #df4d05;
+    /* background-color: #df4d05; */
     /* color: #ffc583; */
     transform: scale(1.05);
     transition: all 0.3s ease 0s;
@@ -188,7 +188,7 @@
 
 .navbar__btn-image:hover {
     /* background-color: #264754; */
-    background-color: #df4d05;
+    /* background-color: #df4d05; */
     color: #c7c7c7;
     transform: scale(1.05);
     transition: all 0.3s ease 0s;
@@ -207,13 +207,13 @@
 .navbar__btn--special {
     margin-left: 20px;
     padding: 5px 25px;
-    background-color: #2a9d8f;
+    /* background-color: #2a9d8f; */
     border: none;
     border-radius: 30px;
     cursor: pointer;
     transition: all 0.3s ease 0s;
 }
 
-.navbar__btn--special:hover {
+/* .navbar__btn--special:hover {
     background-color: #3ab3b9;
-}
+} */

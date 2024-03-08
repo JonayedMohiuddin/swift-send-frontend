@@ -101,7 +101,7 @@ function OrderItem({ orderItem, refreshOrdersList, currentTab }) {
                     </div>
                     <div className="text-lg font-bold font-[amazon-ember-rg] text-gray-500 mb-2">৳ {Math.ceil(orderItem.PRICE * (1 - orderItem.DISCOUNT) * orderItem.QUANTITY)}</div>
                     <div className="flex flex-row gap-4">
-                        <div className="text-xs font-ember-regular text-gray-600">SKU: {orderItem.SUPPLIER_ORDER_ID}</div>
+                        <div className="text-xs font-ember-regular text-gray-600">SKU: {orderItem.SSWI_ID}</div>
                         <div className="text-xs font-ember-regular text-gray-600">User: {orderItem.USER_NAME}</div>
                     </div>
                 </div>
