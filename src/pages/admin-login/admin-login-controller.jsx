@@ -35,6 +35,7 @@ export async function adminLoginAction({ request, params }) {
         localStorage.setItem("userType", "admin");
         localStorage.setItem("userId", data.userId);
         localStorage.setItem("userName", data.userName);
+        localStorage.setItem("imageUrl", data.imageUrl);
 
         return redirect("/admin");
     } else {

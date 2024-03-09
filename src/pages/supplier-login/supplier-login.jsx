@@ -1,12 +1,62 @@
-import { Form, Link, useActionData, useLoaderData } from "react-router-dom";
-
+import { Form, Link, useActionData, useLoaderData, useNavigate } from "react-router-dom";
+import { useState, useContext } from "react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
-
-import InputField from "../../components/form-components/inputField";
+import InputField from "../../components/form-components/InputField";
+import { AuthContext } from "../AuthContext/authContext";
 
 export default function SupplierLogin() {
+    const navigate = useNavigate();
+    const { login } = useContext(AuthContext);
+
     const { errorMessage } = useLoaderData();
-    const errors = useActionData();
+    // const errors = useActionData();
+
+    const [errors, setErrors] = useState({ isError: false, errorMessage: "" });
+
+    async function handleSupplierLogin(event) {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        const loginInfo = Object.fromEntries(formData);
+        loginInfo.userType = "supplier";
+        console.log(loginInfo);
+
+        const response = await fetch("http://localhost:3000/auth/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            credentials: "include", // Include credentials (cookies, authorization headers)
+            body: JSON.stringify(loginInfo),
+        });
+
+        const errors = {};
+
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log("Login successful.");
+
+            const accessToken = data.accessToken;
+            localStorage.setItem("accessToken", accessToken);
+
+            localStorage.setItem("isLoggedIn", true);
+            localStorage.setItem("userType", "supplier");
+            localStorage.setItem("userId", data.userId);
+            localStorage.setItem("userName", data.userName);
+            localStorage.setItem("imageUrl", data.imageUrl);
+
+            login("supplier", data.userId, data.userName, data.imageUrl);
+
+            navigate("/supplier");
+            // return redirect("/catalog");
+        } else {
+            console.log("Error in login. Please try again.");
+
+            errors.isError = true;
+            if (data.errorMessage && data.errorMessage.length > 0) errors.errorMessage = data.errorMessage;
+            setErrors(errors);
+        }
+    }
 
     return (
         <>
@@ -17,7 +67,7 @@ export default function SupplierLogin() {
                 </div>
             )}
 
-            {errorMessage && (
+            {errors.isError == false && errorMessage && (
                 <div className="flex flex-row mx-auto mb-5 w-full lg:w-2/3 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
                     <ExclamationTriangleIcon className="mr-4 h-6 w-6 text-red-400" />
                     {errorMessage ? errorMessage : "Please login to access the item."}
@@ -31,7 +81,7 @@ export default function SupplierLogin() {
                         <h2 className="mt-5 text-center text-xl font-semibold leading-9 tracking-tight text-gray-900 mb-4 ">Supplier Login</h2>
                     </div>
                     <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-sm min-w-40 md:min-w-72 lg:min-w-80 ">
-                        <Form className="space-y-5" action="#" method="POST">
+                        <form className="space-y-5" action="#" method="POST" onSubmit={handleSupplierLogin}>
                             <div>
                                 <label htmlFor="email-input-field" className="block text-sm font-medium leading-6 text-gray-900">
                                     Email address
@@ -65,7 +115,7 @@ export default function SupplierLogin() {
                                     Sign in
                                 </button>
                             </div>
-                        </Form>
+                        </form>
 
                         <p className="mt-5 text-center text-sm text-gray-500">
                             Not a member?{" "}

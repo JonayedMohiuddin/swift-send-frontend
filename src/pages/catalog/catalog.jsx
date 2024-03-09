@@ -23,6 +23,7 @@ export default function Catalog() {
                             productRatingCount={product.RATING_COUNT}
                             productTotalRating={product.RATING}
                             redirectionUrl={`/catalog/${product.ID}`}
+                            includeCategory={true}
                         />
                     ))}
             </div>

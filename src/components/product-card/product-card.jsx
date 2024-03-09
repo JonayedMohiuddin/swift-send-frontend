@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 import "./product-card.css";
 
-export default function ProductCard({ product, productName, productPrice, productImageUrl, productDiscount, productRatingCount, productTotalRating, redirectionUrl }) {
+export default function ProductCard({ product, productName, productPrice, productImageUrl, productDiscount, productRatingCount, productTotalRating, redirectionUrl, includeCategory = false }) {
     let rating = 0;
     rating = productTotalRating.toFixed(1);
     let ratingBar = Math.ceil(rating);
@@ -23,7 +23,7 @@ export default function ProductCard({ product, productName, productPrice, produc
                     {/* <div className="product-card__rating product-card__rating--star-icon">
                         {rating} ({productRatingCount})
                     </div> */}
-                    <div className="">
+                    <div>
                         <div className="flex items-center mb-2">
                             <SmallRatingBar rating={ratingBar} />
 
@@ -32,10 +32,14 @@ export default function ProductCard({ product, productName, productPrice, produc
                             </div>
                         </div>
                     </div>
+
+                    {includeCategory && <div className="text-xs text-gray-500 font-ember-regular mb-1">{product.CATEGORY_NAME}</div>}
+
                     {/* <div className="product-card__extras-container">
                         <div className="product-card__free-delivery">Free Delivery</div>
                         <div className="product-card__voucher">Voucher: 7</div>
                     </div> */}
+
                     {productDiscount > 0 ? (
                         <div className="flex flex-row gap-x-2 items-center">
                             <div className="product-card__price text-writing-important">&#x9F3; {Math.ceil(productPrice - productDiscount * productPrice)}</div>

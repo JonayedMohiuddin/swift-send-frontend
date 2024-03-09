@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./main.css";
 
+import { AuthContext, AuthProvider } from "./pages/AuthContext/authContext";
+
 import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 
 import Root from "./pages/root/root";
@@ -17,7 +19,7 @@ import Cart from "./pages/cart/cart";
 import { cartLoader, cartAction } from "./pages/cart/cart-controller";
 
 import UsersLogin from "./pages/users-login/users-login";
-import { usersLoginLoader, usersLoginAction } from "./pages/users-login/users-login-controller";
+import { usersLoginLoader } from "./pages/users-login/users-login-controller";
 
 import UsersSignup from "./pages/users-signup/users-signup";
 import { usersSignupAction } from "./pages/users-signup/users-signup-controller";
@@ -26,7 +28,7 @@ import SupplierSignup from "./pages/supplier-signup/supplier-signup";
 import { supplierSignupAction } from "./pages/supplier-signup/supplier-signup-controller";
 
 import SupplierLogin from "./pages/supplier-login/supplier-login";
-import { supplierLoginAction, supplierLoginLoader } from "./pages/supplier-login/supplier-login-controller";
+import { supplierLoginLoader } from "./pages/supplier-login/supplier-login-controller";
 
 import Supplier from "./pages/supplier/supplier";
 import { supplierLoader } from "./pages/supplier/supplier-controller";
@@ -48,14 +50,18 @@ import UsersWishlist from "./pages/users-wishlist/users-wishlist";
 
 import SupplierPendingOrders from "./pages/supplier-pending-orders/supplier-pending-orders";
 
+import SupplierDeletedProduct from "./pages/supplier-deleted-product/supplier-deleted-product";
+
+import SupplierProfile from "./pages/supplier-profile/supplier-profile";
+
 import AdminLogin from "./pages/admin-login/admin-login";
-import { adminLoginLoader, adminLoginAction } from "./pages/admin-login/admin-login-controller";
+import { adminLoginLoader } from "./pages/admin-login/admin-login-controller";
 
 import Admin from "./pages/admin/admin";
 
 import AdminOrders from "./pages/admin-orders/admin-orders";
 
-import ErrorPage from "./pages/error/error-page";
+import AdminCategoryManagement from "./pages/admin-category-management/admin-category-management";
 
 const router = createBrowserRouter([
     {
@@ -88,7 +94,7 @@ const router = createBrowserRouter([
                 path: "/users/login",
                 element: <UsersLogin />,
                 loader: usersLoginLoader,
-                action: usersLoginAction,
+                // action: usersLoginAction,
             },
             {
                 path: "/users/signup",
@@ -118,14 +124,22 @@ const router = createBrowserRouter([
                 action: supplierSignupAction,
             },
             {
+                path: "/supplier/profile",
+                element: <SupplierProfile />,
+            },
+            {
                 path: "/supplier/login",
                 element: <SupplierLogin />,
-                action: supplierLoginAction,
+                // action: supplierLoginAction,
                 loader: supplierLoginLoader,
             },
             {
                 path: "/supplier/pendingOrders",
                 element: <SupplierPendingOrders />,
+            },
+            {
+                path: "/supplier/deletedProducts",
+                element: <SupplierDeletedProduct />,
             },
             {
                 path: "/supplier/addProduct",
@@ -148,7 +162,7 @@ const router = createBrowserRouter([
                 path: "/admin/login",
                 element: <AdminLogin />,
                 loader: adminLoginLoader,
-                action: adminLoginAction,
+                // action: adminLoginAction,
             },
             {
                 path: "/admin",
@@ -158,12 +172,18 @@ const router = createBrowserRouter([
                 path: "/admin/orders",
                 element: <AdminOrders />,
             },
+            {
+                path: "/admin/categoryManagement",
+                element: <AdminCategoryManagement />,
+            },
         ],
     },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
-        <RouterProvider router={router} />
+        <AuthProvider>
+            <RouterProvider router={router} />
+        </AuthProvider>
     </React.StrictMode>
 );

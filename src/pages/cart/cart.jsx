@@ -88,7 +88,24 @@ Content-Type: application/json
     async function handleCheckout() {
         if (cartItems.length === 0) return;
 
-        const response = await fetch("http://localhost:3000/users/orders/addFromCart", {
+        // http://localhost:3000/users/about
+        let response = await fetch("http://localhost:3000/users/about", {
+            method: "GET",
+            credentials: "include",
+        });
+        if (response.status !== 200) {
+            console.error("Error in fetching user data");
+            return;
+        }
+        let userData = await response.json();
+        userData = userData[0];
+        console.log(userData);
+        if(userData.ADDRESS == null || userData.ADDRESS == "" || userData.PHONE == null || userData.PHONE == ""){
+            navigate("/users/profile?errorMessage=" + encodeURIComponent("Please update your profile with address and phone number to place order."));
+            return;
+        }
+
+        response = await fetch("http://localhost:3000/users/orders/addFromCart", {
             method: "POST",
             credentials: "include",
         });
@@ -107,7 +124,7 @@ Content-Type: application/json
                 <div className="lg:w-3/4 w-full flex flex-col gap-y-7">
                     {cartItems.length === 0 && (
                         <div className="flex flex-col bg-white p-3 rounded-lg shadow">
-                            <div className="flex flex-row text-lg font-bold text-daraz-orange mb-5 font-ember-light">
+                            <div className="flex flex-row text-lg font-bold text-primary mb-5 font-ember-light">
                                 <ShoppingCartIcon className="w-8 pr-2" /> Your cart is empty
                             </div>
                             <div className="text-base font-ember-light">You have no items in your cart. Start adding items to your cart.</div>
@@ -132,8 +149,8 @@ Content-Type: application/json
                     ))}
                     {/* <div className="flex flex-col bg-white pt-2 rounded-lg ">
                         <div className="flex flex-row justify-between items-center sticky top-16">
-                            <div className="text-xl font-bold font-[amazon-ember-rg] text-daraz-orange mx-3 mb-5 bg-slate-100 rounded-lg px-5">Electronics Mart</div>
-                            <div className="text-xl font-bold font-[amazon-ember-rg] text-daraz-orange mx-3 mb-5 bg-slate-100 rounded-lg px-5">Items {3}</div>
+                            <div className="text-xl font-bold font-[amazon-ember-rg] text-primary mx-3 mb-5 bg-slate-100 rounded-lg px-5">Electronics Mart</div>
+                            <div className="text-xl font-bold font-[amazon-ember-rg] text-primary mx-3 mb-5 bg-slate-100 rounded-lg px-5">Items {3}</div>
                         </div>
                         <div className="flex flex-col gap-y-7 mx-3 mb-3">
                             {cartItems.map((item) => (
@@ -145,7 +162,7 @@ Content-Type: application/json
                 </div>
                 <div className="lg:w-1/4 w-full lg:m-0 mb-8 lg:order-2 order-[-1]">
                     <div className="flex flex-col bg-white p-3 sticky top-20 rounded-lg">
-                        <div className="text-lg font-bold text-daraz-orange mb-5 font-ember-light">Order Summary</div>
+                        <div className="text-lg font-bold text-primary mb-5 font-ember-light">Order Summary</div>
                         <div className="flex flex-row justify-between mb-3">
                             <div className="text-base font-ember-light">Subtotal {cartItems.length} items</div>
                             <div className="text-base font-ember-light">৳ {Math.ceil(totalPrice)}</div>
@@ -156,15 +173,15 @@ Content-Type: application/json
                         </div>
                         <div className="flex flex-row justify-between mb-3">
                             <div className="text-base font-ember-light">Total</div>
-                            <div className="font-bold font-ember-light text-daraz-orange">৳ {Math.ceil(totalPrice - savings)}</div>
+                            <div className="font-bold font-ember-light text-primary">৳ {Math.ceil(totalPrice - savings)}</div>
                         </div>
-                        <div className="flex flex-row justify-between mb-3 gap-x-2">
+                        {/* <div className="flex flex-row justify-between mb-3 gap-x-2">
                             <InputField name="code" autocomplete="off" label="Promo code" placeholder="Enter code" />
                             <button className="text-xs font-ember-light bg-cyan-500 text-white rounded-md py-1 px-2 hover:bg-[#cc4705]">Apply</button>
-                        </div>
+                        </div> */}
 
                         <button
-                            className={`text-lg font-ember-regular min-h-9 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md py-1 px-2 ${
+                            className={`text-lg font-ember-regular min-h-9 bg-primary-light hover:bg-primary text-white rounded-md py-1 px-2 ${
                                 cartItems.length === 0 && "cursor-not-allowed bg-gray-400 hover:bg-gray-400"
                             }`}
                             onClick={handleCheckout}
@@ -281,23 +298,23 @@ function CartItem({ cartItem, totalPrice, saving, setTotalPrice, setSavings }) {
                         </button>
                         <button
                             name="remove"
-                            className="flex flex-row bg-slate-200 hover:text-daraz-orange text-xs font-[amazon-ember-rg] rounded-md py-1 px-2 hover:bg-[#f85606] hover:bg-opacity-15 hover:underline"
+                            className="flex flex-row bg-slate-200 hover:text-primary text-xs font-[amazon-ember-rg] rounded-md py-1 px-2 hover:bg-[#f85606] hover:bg-opacity-15 hover:underline"
                             onClick={() => handleRemoveCartItem(cartItem.CART_ITEM_ID)}
                         >
                             <TrashIcon className="w-4 h-4 mr-2" />
                             Remove
                         </button>
-                        <button className="md:flex md:flex-row hidden bg-slate-200 hover:text-daraz-orange text-xs font-[amazon-ember-rg] rounded-md py-1 px-2 hover:bg-[#f85606] hover:bg-opacity-15 hover:underline">
+                        <button className="md:flex md:flex-row hidden bg-slate-200 hover:text-primary text-xs font-[amazon-ember-rg] rounded-md py-1 px-2 hover:bg-[#f85606] hover:bg-opacity-15 hover:underline">
                             <ShareIcon className="w-4 h-4 mr-2" />
                             Share
                         </button>
 
-                        {/* <button className="text-daraz-orange p-2 hover:underline">Save for later</button> */}
+                        {/* <button className="text-primary p-2 hover:underline">Save for later</button> */}
                     </div>{" "}
                 </div>
 
                 <div className="flex flex-col mt-2">
-                    <div className="text-lg font-bold font-[amazon-ember-rg] text-daraz-orange mx-auto mb-2">৳ {Math.ceil(cartItem.PRICE * (1 - cartItem.DISCOUNT) * quantity)}</div>
+                    <div className="text-lg font-bold font-[amazon-ember-rg] text-primary mx-auto mb-2">৳ {Math.ceil(cartItem.PRICE * (1 - cartItem.DISCOUNT) * quantity)}</div>
                     <div className="text-xs font-[amazon-ember-lt] mx-auto mb-3 line-through text-zinc-500">৳ {Math.ceil(cartItem.PRICE * quantity)}</div>
                     <QuantityManager quantity={quantity} setQuantity={onQuantityChange} />
                 </div>

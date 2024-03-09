@@ -2,27 +2,16 @@ import { Form, Link, redirect, useLoaderData, useNavigate, useSubmit } from "rea
 
 import { ShoppingCartIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 import "./navbar.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+
+import { AuthContext } from "../../pages/AuthContext/authContext";
 
 export default function Navbar() {
     const { categories, currentSelectedCategory, currentSearch } = useLoaderData();
     const submit = useSubmit();
     const navigate = useNavigate();
 
-    let localIsLoggedIn = localStorage.getItem("isLoggedIn") === "true" ? true : false;
-    const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("isLoggedIn") === "true" ? true : false);
-
-    useEffect(() => {
-        setIsLoggedIn(localStorage.getItem("isLoggedIn") === "true" ? true : false);
-    }, [localIsLoggedIn]);
-
-    useEffect(() => {
-        if (currentSelectedCategory !== undefined && currentSelectedCategory !== "" && currentSelectedCategory !== null) {
-            document.getElementById("category").value = currentSelectedCategory;
-        } else {
-            document.getElementById("category").value = "all";
-        }
-    }, [currentSelectedCategory]);
+    const { isLoggedIn, userType, userId, userName, imageUrl, login, logout } = useContext(AuthContext);
 
     async function handleLogout() {
         try {
@@ -37,10 +26,7 @@ export default function Navbar() {
 
             if (response.ok) {
                 console.log("Logout successful");
-
-                localStorage.clear();
-                localStorage.setItem("isLoggedIn", false);
-                setIsLoggedIn(false);
+                logout();
             } else {
                 console.error("Logout failed");
             }
@@ -100,18 +86,18 @@ export default function Navbar() {
                     </Form>
 
                     {isLoggedIn ? (
-                        <div className="group flex items-center justify-center min-w-48 max-w-48 mx-6 py-1 px-1 rounded-lg hover:bg-primary-light">
+                        <div className="group flex items-center justify-center min-w-48 max-w-48 mr-4 py-1 px-1 rounded-lg hover:bg-primary-light">
                             <div className="relative mr-3">
                                 <img
                                     className="min-w-6 w-6 h-6 rounded-full"
-                                    src={localStorage.getItem("userProfilePicture") ? localStorage.getItem("userProfilePicture") : "/images/no-profile-picture.jpg"}
+                                    src={localStorage.getItem("imageUrl") ? localStorage.getItem("imageUrl") : "/images/no-profile-picture.jpg"}
                                     alt="User Profile"
                                 />
                                 <span className="absolute bottom-0 right-0 w-2 h-2 bg-green-500 rounded-full"></span>
                             </div>
                             <div className="flex flex-col justify-center">
                                 <span className="text-xs font-semibold font-ember-light text-white overflow-hidden max-h-[1lh]">{localStorage.getItem("userName") || "Guest User"}</span>
-                                <ProfileDropdown handleLogout={handleLogout} />
+                                <ProfileDropdown handleLogout={handleLogout} userType={userType} />
                             </div>
                         </div>
                     ) : (
@@ -136,20 +122,34 @@ export default function Navbar() {
     );
 }
 
-function ProfileDropdown({ handleLogout }) {
+function ProfileDropdown({ handleLogout, userType }) {
+    return (
+        <div className="invisible absolute top-12 -ml-8 text-xs font-ember-regular z-50 flex flex-col bg-gray-600 text-gray-800 shadow-xl rounded-lg group-hover:visible">
+            {userType === "users" && <UserDropdownOptions handleLogout={handleLogout} />}
+            {userType === "supplier" && <SupplierDropdownOptions handleLogout={handleLogout} />}
+            {userType === "admin" && <AdminDropdownOptions handleLogout={handleLogout} />}
+        </div>
+    );
+}
+
+function UserDropdownOptions({ handleLogout }) {
     const navigate = useNavigate();
 
     return (
-        <div className="invisible absolute top-12 -ml-6 text-xs font-ember-regular z-50 flex flex-col bg-gray-600 text-gray-800 shadow-xl rounded-lg group-hover:visible">
+        <>
             <ul className="text-gray-200" aria-labelledby="dropdownHoverButton">
                 <li>
-                    <button className="w-full block px-6 py-2 hover:bg-gray-800 rounded-t-lg" onClick={() => { navigate("/users/profile") }}>
+                    <button
+                        className="w-full block px-6 py-2 hover:bg-gray-800 rounded-t-lg"
+                        onClick={() => {
+                            navigate("/users/profile");
+                        }}
+                    >
                         Manage my account
                     </button>
                 </li>
                 <li>
                     <button
-                    
                         className="w-full block px-6 py-2 hover:bg-gray-800"
                         onClick={() => {
                             navigate("/users/orders");
@@ -159,8 +159,23 @@ function ProfileDropdown({ handleLogout }) {
                     </button>
                 </li>
                 <li>
-                    <button className="w-full block px-6 py-2 hover:bg-gray-800" onClick={() => {navigate("/users/wishlist")}}>
+                    <button
+                        className="w-full block px-6 py-2 hover:bg-gray-800"
+                        onClick={() => {
+                            navigate("/users/wishlist");
+                        }}
+                    >
                         My wishlist
+                    </button>
+                </li>
+                <li>
+                    <button
+                        className="w-full block px-6 py-2 hover:bg-gray-800"
+                        onClick={() => {
+                            navigate("/catalog");
+                        }}
+                    >
+                        Buy Products
                     </button>
                 </li>
                 <li>
@@ -169,6 +184,131 @@ function ProfileDropdown({ handleLogout }) {
                     </button>
                 </li>
             </ul>
-        </div>
+        </>
+    );
+}
+
+function SupplierDropdownOptions({ handleLogout }) {
+    const navigate = useNavigate();
+
+    return (
+        <>
+            <ul className="text-gray-200" aria-labelledby="dropdownHoverButton">
+                <li>
+                    <button
+                        className="w-full block px-6 py-2 hover:bg-gray-800 rounded-t-lg"
+                        onClick={() => {
+                            navigate("/supplier/profile");
+                        }}
+                    >
+                        Manage account
+                    </button>
+                </li>
+                <li>
+                    <button
+                        className="w-full block px-6 py-2 hover:bg-gray-800"
+                        onClick={() => {
+                            navigate("/supplier/pendingOrders");
+                        }}
+                    >
+                        My orders
+                    </button>
+                </li>
+                <li>
+                    <button
+                        className="w-full block px-6 py-2 hover:bg-gray-800"
+                        onClick={() => {
+                            navigate("/supplier");
+                        }}
+                    >
+                        My products
+                    </button>
+                </li>
+                <li>
+                    <button
+                        className="w-full block px-6 py-2 hover:bg-gray-800"
+                        onClick={() => {
+                            navigate("/supplier/deletedProducts");
+                        }}
+                    >
+                        Deleted products
+                    </button>
+                </li>
+                <li>
+                    <button
+                        className="w-full block px-6 py-2 hover:bg-gray-800"
+                        onClick={() => {
+                            navigate("/supplier/addProduct");
+                        }}
+                    >
+                        Add new product
+                    </button>
+                </li>
+
+                <li>
+                    <button className="w-full px-6 py-2 hover:bg-gray-800 rounded-b-lg" onClick={handleLogout}>
+                        Log out
+                    </button>
+                </li>
+            </ul>
+        </>
+    );
+}
+
+
+function AdminDropdownOptions({ handleLogout }) {
+    const navigate = useNavigate();
+
+    return (
+        <>
+            <ul className="text-gray-200" aria-labelledby="dropdownHoverButton">
+                {/* <li>
+                    <button
+                        className="w-full block px-6 py-2 hover:bg-gray-800 rounded-t-lg"
+                        onClick={() => {
+                            navigate("/admin/profile");
+                        }}
+                    >
+                        Manage account
+                    </button>
+                </li> */}
+                <li>
+                    <button
+                        className="w-full block px-6 py-2 hover:bg-gray-800 rounded-t-lg"
+                        onClick={() => {
+                            navigate("/admin/orders");
+                        }}
+                    >
+                        Manage orders
+                    </button>
+                </li>
+                {/* <li>
+                    <button
+                        className="w-full block px-6 py-2 hover:bg-gray-800"
+                        onClick={() => {
+                            navigate("/admin");
+                        }}
+                    >
+                        Manage suppliers
+                    </button>
+                </li> */}
+                <li>
+                    <button
+                        className="w-full block px-6 py-2 hover:bg-gray-800"
+                        onClick={() => {
+                            navigate("/admin/categoryManagement");
+                        }}
+                    >
+                        Manage categories
+                    </button>
+                </li>
+
+                <li>
+                    <button className="w-full px-6 py-2 hover:bg-gray-800 rounded-b-lg" onClick={handleLogout}>
+                        Log out
+                    </button>
+                </li>
+            </ul>
+        </>
     );
 }

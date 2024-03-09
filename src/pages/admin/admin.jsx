@@ -1,6 +1,13 @@
-import { useLoaderData, Link } from "react-router-dom";
+import { useEffect } from "react";
+import { useLoaderData, Link, useNavigate } from "react-router-dom";
 
 export default function Supplier() {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        navigate("/admin/orders");
+    }, []);
+
     return (
         <>
             <div className="flex flex-row gap-4 items-center justify-start mb-4">

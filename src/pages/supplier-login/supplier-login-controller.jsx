@@ -35,6 +35,7 @@ export async function supplierLoginAction({ request, params }) {
         localStorage.setItem("userType", "supplier");
         localStorage.setItem("userId", data.userId);
         localStorage.setItem("userName", data.userName);
+        localStorage.setItem("imageUrl", data.imageUrl);
 
         return redirect("/supplier");
     } else {

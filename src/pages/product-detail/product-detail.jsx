@@ -137,8 +137,8 @@ export default function ProductDetail() {
                             ({product.RATING_COUNT} {product.RATING_COUNT > 1 ? "ratings" : "rating"})
                         </div>
                         {/* <div className="w-[1px] h-4 bg-black ml-2 mr-2"></div> */}
-                        <TruckIcon className="ml-3 mr-1 w-4 h-4 text-black-300" />
-                        <div className="text-xs">{product.TOTAL_SOLD} Sold</div>
+                        {/* <TruckIcon className="ml-3 mr-1 w-4 h-4 text-black-300" />
+                        <div className="text-xs">{product.TOTAL_SOLD} Sold</div> */}
                     </div>
                     <div className="product-detail__split"></div>
                     <div className="flex flex-row gap-4 items-center mb-4">
@@ -159,12 +159,17 @@ export default function ProductDetail() {
                 </div>
                 <div className="other-detail">
                     <div className="flex flex-col gap-2">
-                        {/* <div className="flex flex-row items-center justify-between">
-                            <div className="other-detail__header">Cateogry</div>
-                        <div className="font-ember-regular text-sm mr-5">{product.CATEGORY_NAME}</div>
-                        </div> */}
                         <div className="other-detail__header">Sold by</div>
-                        <div className="font-ember-regular text-lg">{product.SUPPLIER_NAME}</div>
+                        <div className="font-ember-regular text-lg line-clamp-2 max-h-[2lh]">{product.SUPPLIER_NAME}</div>
+
+                        <div className="other-detail__header">Category</div>
+                        <div className="font-ember-regular text-lg line-clamp-2 max-h-[2lh]">{product.CATEGORY_NAME}</div>
+
+                        <div className="flex flex-row items-center justify-start gap-3 mt-2">
+                            <div className="other-detail__header">Total Sold</div>
+                            <div className="text-sm">{product.TOTAL_SOLD}</div>
+                        </div>
+
                         <div className="flex flex-row items-center justify-start gap-3 mt-2">
                             <button
                                 name="addToWishlist"
@@ -180,10 +185,10 @@ export default function ProductDetail() {
                                     </div>
                                 )}
                             </button>
-                            <button className="flex flex-row bg-slate-200 hover:text-writing-important text-xs font-ember-regular rounded-md py-1 px-2 hover:bg-primary hover:bg-opacity-15 hover:underline">
+                            {/* <button className="flex flex-row bg-slate-200 hover:text-writing-important text-xs font-ember-regular rounded-md py-1 px-2 hover:bg-primary hover:bg-opacity-15 hover:underline">
                                 <ShareIcon className="w-4 h-4 mr-2" />
                                 Share
-                            </button>
+                            </button> */}
                         </div>
                     </div>
                 </div>
@@ -239,7 +244,9 @@ function Reviews({ reviews, productId, hasBought, hasReviewed, setIsModalOpen })
                                 <OutlineStarIcon key={5 + i} className="w-3 h-3 text-black-300" />
                             ))}
                         </p>
-                        <p className="font-semibold text-xs text-blue-600 mr-auto">{review.NAME}</p>
+
+                        <p className="font-semibold text-xs text-blue-600 mr-auto">{review.NAME === null || review.NAME === "" ? "Anonymous" : review.NAME}</p>
+
                         {localStorage.getItem("userId") == review.USER_ID && localStorage.getItem("userType") === "users" && (
                             <div className="flex items-center gap-2">
                                 <button className="text-xs text-blue-600 hover:underline" onClick={() => handleReviewEdit()}>
@@ -323,15 +330,6 @@ function AddEditReviews({ productId, paramRating, paramReview, closeModal, hasRe
 
     return (
         <>
-            {/*
-            <button
-                onClick={openModal}
-                className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                type="button"
-            >
-                Toggle modal
-            </button>
-            {isModalOpen && ( */}
             <div id="crud-modal" tabIndex={-1} aria-hidden="true" className="fixed top-5 right-0 left-0 z-50 flex justify-center items-center w-full h-full">
                 <div className="relative p-4 w-full max-w-md max-h-full">
                     {/* Modal content */}
@@ -355,18 +353,6 @@ function AddEditReviews({ productId, paramRating, paramReview, closeModal, hasRe
                         <form className="p-4 md:p-5 flex flex-col">
                             <div className="grid gap-4 mb-4 grid-cols-2">
                                 <div className="col-span-2">
-                                    {/* <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                        Rating
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="rating"
-                                        id="rating"
-                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                        placeholder="Type product rating"
-                                        required=""
-                                        defaultValue={rating}
-                                    /> */}
                                     <div className="flex items-center">
                                         <button
                                             onClick={(event) => {
@@ -477,86 +463,6 @@ function AddEditReviews({ productId, paramRating, paramReview, closeModal, hasRe
                                 Save
                             </button>
                         </form>
-                    </div>
-                </div>
-            </div>
-            {/* )} */}
-        </>
-    );
-}
-
-function Ratings() {
-    return (
-        <>
-            <div className="flex flex-row">
-                <div className="flex flex-col">
-                    <div className="flex items-center mb-2">
-                        <svg className="w-4 h-4 text-yellow-300 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                        </svg>
-                        <svg className="w-4 h-4 text-yellow-300 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                        </svg>
-                        <svg className="w-4 h-4 text-yellow-300 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                        </svg>
-                        <svg className="w-4 h-4 text-yellow-300 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                        </svg>
-                        <svg className="w-4 h-4 text-gray-300 me-1 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                        </svg>
-                        <p className="ms-1 text-sm font-medium text-gray-500">4.95</p>
-                        <p className="ms-1 text-sm font-medium text-gray-500">out of</p>
-                        <p className="ms-1 text-sm font-medium text-gray-500">5</p>
-                    </div>
-                    <p className="text-sm font-medium text-gray-500">1,745 global ratings</p>
-                </div>
-                <div className="flex flex-col min-w-[400px]">
-                    <div className="flex items-center mt-4">
-                        <a href="#" className="text-sm font-medium text-blue-600 hover:underline">
-                            5 star
-                        </a>
-                        <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded">
-                            <div className="h-5 bg-yellow-300 rounded" style={{ width: "70%" }} />
-                        </div>
-                        <span className="text-sm font-medium text-gray-500">70%</span>
-                    </div>
-                    <div className="flex items-center mt-4">
-                        <a href="#" className="text-sm font-medium text-blue-600 hover:underline">
-                            4 star
-                        </a>
-                        <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded">
-                            <div className="h-5 bg-yellow-300 rounded" style={{ width: "17%" }} />
-                        </div>
-                        <span className="text-sm font-medium text-gray-500">17%</span>
-                    </div>
-                    <div className="flex items-center mt-4">
-                        <a href="#" className="text-sm font-medium text-blue-600 hover:underline">
-                            3 star
-                        </a>
-                        <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded">
-                            <div className="h-5 bg-yellow-300 rounded" style={{ width: "8%" }} />
-                        </div>
-                        <span className="text-sm font-medium text-gray-500">8%</span>
-                    </div>
-                    <div className="flex items-center mt-4">
-                        <a href="#" className="text-sm font-medium text-blue-600 hover:underline">
-                            2 star
-                        </a>
-                        <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded">
-                            <div className="h-5 bg-yellow-300 rounded" style={{ width: "4%" }} />
-                        </div>
-                        <span className="text-sm font-medium text-gray-500">4%</span>
-                    </div>
-                    <div className="flex items-center mt-4">
-                        <a href="#" className="text-sm font-medium text-blue-600 hover:underline">
-                            1 star
-                        </a>
-                        <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded">
-                            <div className="h-5 bg-yellow-300 rounded" style={{ width: "1%" }} />
-                        </div>
-                        <span className="text-sm font-medium text-gray-500">1%</span>
                     </div>
                 </div>
             </div>

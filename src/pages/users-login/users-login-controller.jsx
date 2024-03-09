@@ -37,6 +37,7 @@ export async function usersLoginAction({ request, params }) {
         localStorage.setItem("userType", "users");
         localStorage.setItem("userId", data.userId);
         localStorage.setItem("userName", data.userName);
+        localStorage.setItem("imageUrl", data.imageUrl);
 
         return redirect("/catalog");
     } else {

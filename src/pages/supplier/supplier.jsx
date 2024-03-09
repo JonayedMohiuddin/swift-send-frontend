@@ -7,24 +7,23 @@ import ProductCard from "../../components/product-card/product-card";
 export default function Supplier() {
     const { products } = useLoaderData();
 
+    const nonNullCategoryProducts = products.filter((product) => product.CATEGORY_ID != null && product.IS_DELETED == 0);
+    const nullCategoryProducts = products.filter((product) => product.CATEGORY_ID == null && product.IS_DELETED == 0);
+
     return (
         <>
-            <div className="flex flex-row gap-4 items-center justify-start mb-4">
-                <Link to="/supplier/addProduct" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    <PlusCircleIcon className="h-6 w-6 inline-block mr-2" />
-                    Add Product
-                </Link>
-                <Link to="/supplier/pendingOrders" className="bg-emerald-500 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded">
-                    Orders
-                </Link>
-                {/* <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Remove Product</button>
-                <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Update Product</button> */}
+            <div className="flex flex-row justify-between items-center">
+                <h1 className="text-xl font-bold font-ember-bold text-gray-600">Your Products</h1>
             </div>
 
-            {products.length === 0 && (
-                <div className="flex flex-col gap-4 items-center min-h-52">
+            {nonNullCategoryProducts.length == 0 && (
+                <div className="flex flex-col gap-4 items-center">
                     <div className="font-ember-light text-center text-3xl font-bold text-gray-600 opacity-35">No products found</div>
                     <div className="font-ember-light text-center text-3xl font-bold text-gray-600 opacity-35">Add new products</div>
+                    <Link to="/supplier/addProduct" className="flex flex-row bg-primary text-white text-xs font-[amazon-ember-rg] rounded-md py-1 px-2 hover:bg-primary-light hover:underline">
+                        <PlusCircleIcon className="w-4 h-4 mr-2" />
+                        Add Product
+                    </Link>
                 </div>
             )}
 
@@ -37,7 +36,7 @@ export default function Supplier() {
                     minWidth: "700px",
                 }}
             >
-                {products.map((product) => (
+                {/* {products.map((product) => (
                     <ProductCard
                         key={product.PRODUCT_ID}
                         product={product}
@@ -48,6 +47,51 @@ export default function Supplier() {
                         productRatingCount={product.RATING_COUNT}
                         productTotalRating={product.RATING}
                         redirectionUrl={`/supplier/${product.PRODUCT_ID}`}
+                        includeCategory={true}
+                    />
+                ))} */}
+                {nonNullCategoryProducts.map((product) => (
+                    <ProductCard
+                        key={product.PRODUCT_ID}
+                        product={product}
+                        productName={product.PRODUCT_NAME}
+                        productPrice={product.PRODUCT_PRICE}
+                        productImageUrl={product.PRODUCT_IMAGE_URL}
+                        productDiscount={product.PRODUCT_DISCOUNT}
+                        productRatingCount={product.RATING_COUNT}
+                        productTotalRating={product.RATING}
+                        redirectionUrl={`/supplier/${product.PRODUCT_ID}`}
+                        includeCategory={true}
+                    />
+                ))}
+            </div>
+
+            {nullCategoryProducts.length > 0 && (
+                <div className="flex flex-row justify-between items-center">
+                    <h1 className="text-xl font-bold font-ember-bold text-red-600">Categorize (Customers wont see these unless)</h1>
+                </div>
+            )}
+            <div
+                style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fill, minmax(215px, 1fr))",
+                    gap: "40px 15px",
+                    margin: "30px auto 60px auto",
+                    minWidth: "700px",
+                }}
+            >
+                {nullCategoryProducts.map((product) => (
+                    <ProductCard
+                        key={product.PRODUCT_ID}
+                        product={product}
+                        productName={product.PRODUCT_NAME}
+                        productPrice={product.PRODUCT_PRICE}
+                        productImageUrl={product.PRODUCT_IMAGE_URL}
+                        productDiscount={product.PRODUCT_DISCOUNT}
+                        productRatingCount={product.RATING_COUNT}
+                        productTotalRating={product.RATING}
+                        redirectionUrl={`/supplier/${product.PRODUCT_ID}`}
+                        includeCategory={true}
                     />
                 ))}
             </div>
