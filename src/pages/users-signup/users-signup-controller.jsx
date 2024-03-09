@@ -5,6 +5,10 @@ export async function usersSignupAction({ request, params }) {
     const signupInfo = Object.fromEntries(formData);
     signupInfo.userType = "users";
     signupInfo.name = signupInfo.firstname + " " + signupInfo.lastname;
+
+    if(signupInfo.password !== signupInfo.confirmPassword) {
+        return { isError: true, errorMessage: "Passwords do not match." };
+    }
     
     console.log(signupInfo);
 

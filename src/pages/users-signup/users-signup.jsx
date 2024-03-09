@@ -1,6 +1,6 @@
-import { Form, useActionData } from "react-router-dom";
+import { Form, useActionData, Link } from "react-router-dom";
 
-import InputField from "../../components/form-components/inputField";
+import InputField from "../../components/form-components/InputField";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
 export default function UsersSignup() {
@@ -44,7 +44,7 @@ export default function UsersSignup() {
                                     <InputField id="new-password-input" name="password" type="password" placeholder="Password" autocomplete="new-password" required />
                                 </div>
                                 <div className="mt-5">
-                                    <InputField id="confirmation-password-input" name="password" type="password" placeholder="Confirm Password" autocomplete="new-password" required />
+                                    <InputField id="confirmation-password-input" name="confirmPassword" type="password" placeholder="Confirm Password" autocomplete="new-password" required />
                                 </div>
                                 <div className="flex flex-row justify-start items-center mt-5">
                                     <input id="agreement-checkbox" type="checkbox" className="border border-gray-400 mr-2 w-4 h-4" required />
@@ -65,6 +65,18 @@ export default function UsersSignup() {
                             </Form>
                         </div>
                     </div>
+                </div>
+                
+                <div className="flex flex-row justify-end mt-5 mb-5 gap-8">
+                    <Link to="/supplier/login" className="mr-auto text-xs font-semibold leading-6 hover:text-indigo-500 hover:underline">
+                        Admin Login
+                    </Link>
+                    <Link to="/supplier/login" className="font-semibold leading-6 hover:text-indigo-500 hover:underline">
+                        Are you a Seller?
+                    </Link>
+                    <Link to="/supplier/signup" className="font-semibold leading-6 hover:text-indigo-500 hover:underline">
+                        Become a Seller
+                    </Link>
                 </div>
             </div>
         </>

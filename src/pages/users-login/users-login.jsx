@@ -51,7 +51,7 @@ export default function UsersLogin() {
 
             login("users", data.userId, data.userName, data.imageUrl);
 
-            navigate("/catalog")
+            navigate("/catalog");
             // return redirect("/catalog");
         } else {
             console.log("Error in login. Please try again.");
@@ -71,7 +71,7 @@ export default function UsersLogin() {
                 </div>
             )}
 
-            {(errors.isError == false) && errorMessage && (
+            {errors.isError == false && errorMessage && (
                 <div className="flex flex-row mx-auto mb-5 w-full lg:w-2/3 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
                     <ExclamationTriangleIcon className="mr-4 h-6 w-6 text-red-400" />
                     {errorMessage ? errorMessage : "Please login to access the item."}
@@ -137,6 +137,9 @@ export default function UsersLogin() {
             </div>
 
             <div className="flex flex-row justify-end mt-5 mb-5 gap-8">
+                <Link to="/admin/login" className="mr-auto text-xs font-semibold leading-6 hover:text-indigo-500 hover:underline">
+                    Admin Login
+                </Link>
                 <Link to="/supplier/login" className="font-semibold leading-6 hover:text-indigo-500 hover:underline">
                     Are you a Seller?
                 </Link>

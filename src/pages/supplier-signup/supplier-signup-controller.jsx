@@ -4,7 +4,7 @@ export async function supplierSignupAction({ request, params }) {
     const formData = await request.formData();
     const signupInfo = Object.fromEntries(formData);
     signupInfo.userType = "supplier";
-    
+
     console.log(signupInfo);
 
     // Send the signupInfo to the server
@@ -22,10 +22,9 @@ export async function supplierSignupAction({ request, params }) {
         return redirect("/supplier/login");
     } else {
         const data = await response.json();
-        if(data.errorMessage && data.errorMessage.length > 0) errors.errorMessage = data.errorMessage;
+        if (data.errorMessage && data.errorMessage.length > 0) errors.errorMessage = data.errorMessage;
         errors.isError = true;
     }
 
     return errors;
 }
-
