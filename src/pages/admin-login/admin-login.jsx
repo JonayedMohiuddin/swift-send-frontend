@@ -47,7 +47,7 @@ export default function AdminLogin() {
 
             login("admin", data.userId, data.userName, data.imageUrl);
 
-            navigate("/admin")
+            navigate("/admin");
             // return redirect("/catalog");
         } else {
             console.log("Error in login. Please try again.");

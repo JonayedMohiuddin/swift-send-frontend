@@ -8,6 +8,8 @@ import { HeartIcon as HeartIconOutline, ShareIcon, StarIcon as OutlineStarIcon, 
 import { StarIcon as SolidStarIcon, HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
 
 export default function ProductDetail() {
+    const navigate = useNavigate();
+    
     const { product, reviews, hasBought, hasReviewed, isWishListed } = useLoaderData();
     const [quantity, setQuantity] = useState(1);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -53,7 +55,23 @@ export default function ProductDetail() {
     }
 
     async function handleBuyNow() {
-        const response = await fetch("http://localhost:3000/users/orders/add", {
+        let response = await fetch("http://localhost:3000/users/about", {
+            method: "GET",
+            credentials: "include",
+        });
+        if (response.status !== 200) {
+            console.error("Error in fetching user data");
+            return;
+        }
+        let userData = await response.json();
+        userData = userData[0];
+        console.log(userData);
+        if(userData.ADDRESS == null || userData.ADDRESS == "" || userData.PHONE == null || userData.PHONE == ""){
+            navigate("/users/profile?errorMessage=" + encodeURIComponent("Please update your profile with address and phone number to place order."));
+            return;
+        }
+
+        response = await fetch("http://localhost:3000/users/orders/add", {
             method: "POST",
             credentials: "include",
             headers: {

@@ -91,6 +91,9 @@ export default function Navbar() {
                                 <img
                                     className="min-w-6 w-6 h-6 rounded-full"
                                     src={localStorage.getItem("imageUrl") ? localStorage.getItem("imageUrl") : "/images/no-profile-picture.jpg"}
+                                    onError={(e) => {
+                                        e.target.src = "/images/no-profile-picture.jpg";
+                                    }}
                                     alt="User Profile"
                                 />
                                 <span className="absolute bottom-0 right-0 w-2 h-2 bg-green-500 rounded-full"></span>
@@ -254,7 +257,6 @@ function SupplierDropdownOptions({ handleLogout }) {
         </>
     );
 }
-
 
 function AdminDropdownOptions({ handleLogout }) {
     const navigate = useNavigate();
