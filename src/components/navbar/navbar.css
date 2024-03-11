@@ -111,7 +111,7 @@
 .navbar__category {
     background-image: none;
 
-    font-family: Georgia, Times, "Times New Roman", serif;
+    /* font-family: Georgia, Times, "Times New Roman", serif; */
     font-size: 0.8em;
     height: 40px;
     border-radius: 8px 0 0 8px;

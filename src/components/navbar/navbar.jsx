@@ -48,7 +48,7 @@ export default function Navbar() {
                     </Link>
                     <Form className="navbar__search-container" id="search-category-form" method="get" role="search" action="/catalog">
                         <select
-                            className="navbar__category"
+                            className="navbar__category font-ember-regular"
                             name="category"
                             id="category"
                             defaultValue={currentSelectedCategory}
@@ -90,7 +90,7 @@ export default function Navbar() {
                             <div className="relative mr-3">
                                 <img
                                     className="min-w-6 w-6 h-6 rounded-full"
-                                    src={localStorage.getItem("imageUrl") ? localStorage.getItem("imageUrl") : "/images/no-profile-picture.jpg"}
+                                    src={localStorage.getItem("imageUrl") ? `${localStorage.getItem("imageUrl")}` : "/images/no-profile-picture.jpg"}
                                     onError={(e) => {
                                         e.target.src = "/images/no-profile-picture.jpg";
                                     }}
